@@ -101,7 +101,7 @@ export default function Navbar() {
     >
       {/* Desktop Navbar */}
       <nav className="hidden md:flex justify-between items-center px-gutter max-w-container-max mx-auto w-full gap-4">
-        {/* Logo - Enhanced Contrast Container & Increased Sizing */}
+        {/* Logo */}
         <Link 
           to="/" 
           className="flex-shrink-0 transition-all duration-300 hover:scale-[1.02] relative group py-1 block"
@@ -214,43 +214,43 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Navbar - Unified Alignment Container */}
+      {/* Mobile Navbar - Exact Dimensions Match */}
       <nav className="md:hidden flex justify-between items-center px-gutter w-full max-w-container-max mx-auto">
-        {/* Mobile Menu Toggle - Fixed negative margin translation to snap icon alignment */}
+        {/* Mobile Menu Toggle */}
         <button
-          className="text-white p-2 -ml-2 hover:bg-white/5 rounded-lg transition-colors flex items-center justify-center"
+          className="text-white h-10 w-10 hover:bg-white/5 rounded-lg transition-colors flex items-center justify-center"
           onClick={() => {
             setMobileOpen(!mobileOpen)
             if (searchOpen) setSearchOpen(false)
           }}
           aria-label="Toggle menu"
         >
-          <span className="material-symbols-outlined text-2xl">
+          <span className="material-symbols-outlined text-[32px] leading-none select-none">
             {mobileOpen ? 'close' : 'menu'}
           </span>
         </button>
 
         {/* Mobile Logo - Center Balanced */}
-        <Link to="/" className="flex-shrink-0 py-2">
+        <Link to="/" className="flex-shrink-0 py-2 block h-14 flex items-center">
           <img alt="Ngova Security Logo" className="h-10 w-auto object-contain filter drop-shadow-md" src={LOGO_URL} />
         </Link>
 
-        {/* Mobile Search Toggle - Fixed negative margin translation to snap icon alignment */}
+        {/* Mobile Search Toggle */}
         <button
           onClick={() => {
             setSearchOpen(!searchOpen)
             if (mobileOpen) setMobileOpen(false)
           }}
-          className="text-white p-2 -mr-2 hover:bg-white/5 rounded-lg transition-colors flex items-center justify-center"
+          className="text-white h-10 w-10 hover:bg-white/5 rounded-lg transition-colors flex items-center justify-center"
           aria-label="Search"
         >
-          <span className="material-symbols-outlined text-2xl">
+          <span className="material-symbols-outlined text-[32px] leading-none select-none">
             {searchOpen ? 'close' : 'search'}
           </span>
         </button>
       </nav>
 
-      {/* Mobile Search Bar - Padded to match application page edges */}
+      {/* Mobile Search Bar */}
       {searchOpen && (
         <div className="md:hidden bg-fortress-black border-b border-primary/10 px-gutter py-3 animate-in fade-in slide-in-from-top duration-200 w-full">
           <div className="relative mb-2">
@@ -288,7 +288,7 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Mobile Dropdown Menu Container - Perfected Text/Gutter Grid Alignment */}
+      {/* Mobile Dropdown Menu Container */}
       {mobileOpen && (
         <div className="md:hidden bg-fortress-black/98 backdrop-blur-lg border-t border-white/5 shadow-2xl h-[calc(100vh-56px)] overflow-y-auto animate-in fade-in slide-in-from-top duration-300">
           <div className="px-gutter py-4 space-y-1">
