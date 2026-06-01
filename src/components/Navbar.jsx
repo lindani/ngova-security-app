@@ -214,7 +214,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Navbar - Exact Dimensions Match */}
+      {/* Mobile Navbar */}
       <nav className="md:hidden flex justify-between items-center px-gutter w-full max-w-container-max mx-auto">
         {/* Mobile Menu Toggle */}
         <button
@@ -230,7 +230,7 @@ export default function Navbar() {
           </span>
         </button>
 
-        {/* Mobile Logo - Center Balanced */}
+        {/* Mobile Logo */}
         <Link to="/" className="flex-shrink-0 py-2 block h-14 flex items-center">
           <img alt="Ngova Security Logo" className="h-10 w-auto object-contain filter drop-shadow-md" src={LOGO_URL} />
         </Link>
@@ -250,7 +250,7 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile Search Bar */}
+      {/* Mobile Search Bar - Prevent Auto-Zoom */}
       {searchOpen && (
         <div className="md:hidden bg-fortress-black border-b border-primary/10 px-gutter py-3 animate-in fade-in slide-in-from-top duration-200 w-full">
           <div className="relative mb-2">
@@ -260,7 +260,7 @@ export default function Navbar() {
               autoFocus
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full bg-white/5 border border-primary/20 text-white placeholder-on-surface-variant px-4 py-2 text-sm pr-10 rounded-lg focus:outline-none focus:border-primary/50"
+              className="w-full bg-white/5 border border-primary/20 text-white placeholder-on-surface-variant px-4 py-2.5 text-base md:text-sm pr-10 rounded-lg focus:outline-none focus:border-primary/50"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-md">
               search
