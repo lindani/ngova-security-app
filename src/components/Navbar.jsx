@@ -106,9 +106,7 @@ export default function Navbar() {
           to="/" 
           className="flex-shrink-0 transition-all duration-300 hover:scale-[1.02] relative group py-1 block"
         >
-          {/* Subtle backing glow to pop text logo out away from dynamic dark background graphics */}
           <div className="absolute inset-0 bg-fortress-black/40 blur-md rounded-lg opacity-100 group-hover:bg-fortress-black/60 transition-colors pointer-events-none -inset-x-2"></div>
-          
           <img 
             alt="Ngova Security Logo" 
             className="h-14 lg:h-18 w-auto object-contain relative z-10 transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] filter brightness-110" 
@@ -216,11 +214,11 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Navbar */}
-      <nav className="md:hidden flex justify-between items-center px-4 py-2 w-full max-w-container-max mx-auto">
-        {/* Mobile Menu Toggle */}
+      {/* Mobile Navbar - Unified Alignment Container */}
+      <nav className="md:hidden flex justify-between items-center px-gutter w-full max-w-container-max mx-auto">
+        {/* Mobile Menu Toggle - Fixed negative margin translation to snap icon alignment */}
         <button
-          className="text-white p-2 hover:bg-white/5 rounded-lg transition-colors flex items-center justify-center"
+          className="text-white p-2 -ml-2 hover:bg-white/5 rounded-lg transition-colors flex items-center justify-center"
           onClick={() => {
             setMobileOpen(!mobileOpen)
             if (searchOpen) setSearchOpen(false)
@@ -232,18 +230,18 @@ export default function Navbar() {
           </span>
         </button>
 
-        {/* Mobile Logo - Optimized scale balance */}
-        <Link to="/" className="flex-shrink-0 py-0.5">
+        {/* Mobile Logo - Center Balanced */}
+        <Link to="/" className="flex-shrink-0 py-2">
           <img alt="Ngova Security Logo" className="h-10 w-auto object-contain filter drop-shadow-md" src={LOGO_URL} />
         </Link>
 
-        {/* Mobile Search */}
+        {/* Mobile Search Toggle - Fixed negative margin translation to snap icon alignment */}
         <button
           onClick={() => {
             setSearchOpen(!searchOpen)
             if (mobileOpen) setMobileOpen(false)
           }}
-          className="text-white p-2 hover:bg-white/5 rounded-lg transition-colors flex items-center justify-center"
+          className="text-white p-2 -mr-2 hover:bg-white/5 rounded-lg transition-colors flex items-center justify-center"
           aria-label="Search"
         >
           <span className="material-symbols-outlined text-2xl">
@@ -252,9 +250,9 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile Search Bar */}
+      {/* Mobile Search Bar - Padded to match application page edges */}
       {searchOpen && (
-        <div className="md:hidden bg-fortress-black border-b border-primary/10 px-4 py-3 animate-in fade-in slide-in-from-top duration-200 w-full">
+        <div className="md:hidden bg-fortress-black border-b border-primary/10 px-gutter py-3 animate-in fade-in slide-in-from-top duration-200 w-full">
           <div className="relative mb-2">
             <input
               type="text"
@@ -269,7 +267,7 @@ export default function Navbar() {
             </span>
           </div>
 
-          {/* Mobile Search Results */}
+          {/* Mobile Search Results list */}
           {searchQuery.trim() !== '' && (
             <div className="space-y-1 max-h-60 overflow-y-auto mt-2">
               {searchResults.length > 0 ? (
@@ -290,17 +288,17 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Mobile Dropdown Menu Container */}
+      {/* Mobile Dropdown Menu Container - Perfected Text/Gutter Grid Alignment */}
       {mobileOpen && (
         <div className="md:hidden bg-fortress-black/98 backdrop-blur-lg border-t border-white/5 shadow-2xl h-[calc(100vh-56px)] overflow-y-auto animate-in fade-in slide-in-from-top duration-300">
-          <div className="px-4 py-4 space-y-1">
-            {navLinks.map((link, index) => {
+          <div className="px-gutter py-4 space-y-1">
+            {navLinks.map((link) => {
               const isActive = location.pathname === link.to
               return (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`flex items-center gap-4 px-4 py-3.5 rounded-lg text-sm font-medium transition-all border-l-2 ${
+                  className={`flex items-center gap-4 px-3 py-3.5 rounded-lg text-sm font-medium transition-all border-l-2 ${
                     isActive
                       ? 'text-primary bg-primary/10 border-primary'
                       : 'text-on-surface-variant border-transparent hover:bg-white/5'
@@ -313,7 +311,7 @@ export default function Navbar() {
             })}
           </div>
           
-          <div className="p-4 border-t border-white/5">
+          <div className="mx-gutter py-4 border-t border-white/5">
             <Link
               to="/quote"
               className="w-full flex items-center justify-center gap-2 bg-primary text-black py-3 font-bold rounded-lg text-sm"
