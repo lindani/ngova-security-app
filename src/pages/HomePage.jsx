@@ -37,37 +37,35 @@ export default function HomePage() {
 
   useRevealAll(containerRef, '.reveal-hidden')
 
-  // Hero background transition cycle
+  // Hero background transition cycle (adjusted to match duration metrics)
   useEffect(() => {
     const imageInterval = setInterval(() => {
-      setCurrentHeroIndex((prevIndex) => (prevIndex + 1) % HERO_BACKGROUND_IMAGES.length)
-    }, 5000) // Change image every 5 seconds
+      setCurrentHeroIndex((prev) => (prev + 1) % HERO_BACKGROUND_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(imageInterval);
+  }, []);
 
-    return () => clearInterval(imageInterval)
-  }, [])
-
-  // Auto-scroll carousel
+  // Robust Auto-scroll Carousel
   useEffect(() => {
-    if (!isAutoScrolling || !carouselRef.current) return
+    if (!isAutoScrolling) return;
 
-    autoScrollIntervalRef.current = setInterval(() => {
-      const carousel = carouselRef.current
-      if (!carousel) return
+    const interval = setInterval(() => {
+      const carousel = carouselRef.current;
+      if (!carousel) return;
+
+      const scrollAmount = 320;
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
       
-      const scrollAmount = 320
-      const maxScroll = carousel.scrollWidth - carousel.clientWidth
-      let newScroll = carousel.scrollLeft + scrollAmount
-      
-      if (newScroll > maxScroll) {
-        newScroll = 0
+      // Smooth reset logic
+      if (carousel.scrollLeft >= maxScroll - 10) {
+        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       }
-      
-      carousel.scrollTo({ left: newScroll, behavior: 'smooth' })
-      setCarouselScroll(newScroll)
-    }, 4000)
+    }, 4000);
 
-    return () => clearInterval(autoScrollIntervalRef.current)
-  }, [isAutoScrolling])
+    return () => clearInterval(interval);
+  }, [isAutoScrolling]);
 
   const scrollCarousel = (direction) => {
     const carousel = carouselRef.current
@@ -76,8 +74,9 @@ export default function HomePage() {
     setIsAutoScrolling(false)
     const scrollAmount = 320
     const newScroll = direction === 'left' 
-      ? Math.max(0, carouselScroll - scrollAmount)
-      : carouselScroll + scrollAmount
+      ? Math.max(0, carousel.scrollLeft - scrollAmount)
+      : Math.min(carousel.scrollWidth - carousel.clientWidth, carousel.scrollLeft + scrollAmount)
+    
     carousel.scrollTo({ left: newScroll, behavior: 'smooth' })
     setCarouselScroll(newScroll)
   }
@@ -95,20 +94,29 @@ export default function HomePage() {
     <main ref={containerRef}>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] md:min-h-screen flex items-center pt-28 md:pt-36 pb-16 lg:pb-24 overflow-hidden bg-fortress-black">
-        {/* Layered Cross-Fading Background */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          {HERO_BACKGROUND_IMAGES.map((url, index) => (
-            <img 
-              key={url}
-              alt={`Hero background frame ${index + 1}`} 
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out brightness-50 lg:brightness-[0.65] ${
-                index === currentHeroIndex ? 'opacity-50 sm:opacity-60 animate-ambient-zoom' : 'opacity-0'
-              }`}
+        {/* Layered Sliding & Zooming Background Carousel */}
+        <div className="absolute inset-0 z-0 overflow-hidden bg-fortress-black">
+        {HERO_BACKGROUND_IMAGES.map((url, index) => (
+          <div
+            key={url}
+            className="absolute inset-0 w-full h-full transition-all duration-[1200ms] ease-in-out"
+            style={{ 
+              transform: `translateX(${(index - currentHeroIndex) * 100}%)`,
+              opacity: index === currentHeroIndex ? 0.6 : 0
+            }}
+          >
+            <img
               src={url}
+              alt={`Hero background ${index + 1}`}
+              className="w-full h-full object-cover transition-transform duration-[8000ms] ease-out"
+              style={{
+                transform: index === currentHeroIndex ? 'scale(1.12)' : 'scale(1.0)',
+              }}
             />
-          ))}
-          <div className="absolute inset-0 hero-gradient"></div>
-        </div>
+          </div>
+        ))}
+        <div className="absolute inset-0 z-10 hero-gradient"></div>
+      </div>
 
         <div className="relative z-10 max-w-container-max mx-auto px-gutter w-full reveal-hidden" id="hero-content">
           <div className="max-w-3xl lg:max-w-4xl">
@@ -136,7 +144,7 @@ export default function HomePage() {
           </div>
         </div>
         
-        {/* Quick Stats / Status */}
+        {/* Quick Stats */}
         <div className="absolute bottom-12 right-gutter hidden lg:block reveal-hidden" id="hero-stats">
           <div className="glass-card p-6 flex gap-12 rounded-xl border border-white/10 backdrop-blur-md">
             <div>
@@ -153,7 +161,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* Core Competencies (Bento Grid) */}
       <section className="py-section-gap max-w-container-max mx-auto px-gutter bg-background" id="services">
         <div className="mb-12 sm:mb-16 reveal-hidden">
