@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+/* 21st.dev Magic - Smooth Transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Glass Card */
+.glass-card {
+  background: rgba(12, 19, 34, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 179, 172, 0.4);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+}
+
+/* 21st.dev Magic - Enhanced Glass Effects */
+.glass-card:hover {
+  border-color: rgba(255, 179, 172, 0.3);
+  background: rgba(12, 19, 34, 0.8);
+}
+
+/* Glass Panel */
+.glass-panel {
+  background: rgba(25, 31, 47, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-quote {
+  background: rgba(20, 27, 43, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Hero Gradient */
+.hero-gradient {
+  background: linear-gradient(to bottom, rgba(12, 19, 34, 0.1), rgba(12, 19, 34, 0.95));
+}
+
+.hero-gradient-full {
+  background: linear-gradient(180deg, rgba(12, 19, 34, 0.2) 0%, rgba(12, 19, 34, 1) 100%);
+}
+
+/* Body */
+body {
+  background-color: #0c1322;
+  color: #dce2f7;
+}
+
+/* Ambient Zoom */
+@keyframes ambient-zoom {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.animate-ambient-zoom {
+  animation: ambient-zoom 20s ease-in-out infinite;
+}
+
+/* 21st.dev Magic - Floating Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* 21st.dev Magic - Slide In Up Animation for Mobile Menu */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 21st.dev Magic - Glow Pulse */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 179, 172, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(255, 179, 172, 0.6); }
+}
+
+.glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Reveal Animations */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-field {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-field.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Shimmer Button */
+.shimmer-btn {
+  background: linear-gradient(90deg, #ffb3ac 0%, #ffdad6 50%, #ffb3ac 100%);
+  background-size: 200% 100%;
+  color: #410003;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.shimmer-btn:hover {
+  animation: shimmer 1.5s infinite;
+  box-shadow: 0 0 30px rgba(255, 179, 172, 0.4);
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Text Glow */
+.text-glow {
+  text-shadow: 0 0 15px rgba(255, 179, 172, 0.4);
+}
+
+/* 21st.dev Magic - Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #ffb3ac 0%, #ffdad6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card Hover for images */
+.card-hover:hover .card-img {
+  transform: scale(1.05);
+}
+
+/* Parallax */
+.parallax-bg {
+  transition: transform 0.1s ease-out;
+}
+
+/* Loading Button */
+.btn-loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+.btn-loading .material-symbols-outlined {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Input styling for dark theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #dce2f7;
+  -webkit-box-shadow: 0 0 0px 1000px #141b2b inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0c1322;
+}
+::-webkit-scrollbar-thumb {
+  background: #2e3545;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ffb3ac;
+}
+
+/* Selection */
+::selection {
+  background-color: #ffb3ac;
+  color: #680008;
+}
+
+/* Carousel Scrollbar Hide */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Partner logo background */
+.partner-logo-bg {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 48px;
+}
+
+/* 21st.dev Magic - Responsive Typography Enhancements */
+@media (max-width: 768px) {
+  .glass-card {
+    backdrop-filter: blur(15px);
+  }
+  
+  .animate-ambient-zoom {
+    animation: ambient-zoom 15s ease-in-out infinite;
+  }
+}
+
+/* 21st.dev Magic - Smooth Scroll Behavior */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* 21st.dev Magic - Responsive Grid */
+@media (max-width: 640px) {
+  .auto-rows-\[300px\] {
+    auto-rows: minmax(250px, auto);
+  }
+}
+
+/* 21st.dev Magic - Touch Optimization */
+@media (hover: none) and (pointer: coarse) {
+  button, a {
+    padding: 12px 16px;
+  }
+  
+  .glass-card {
+    border-color: rgba(255, 179, 172, 0.2);
+  }
+}
+
+/* 21st.dev Magic - Dark Mode Enhancements */
+@media (prefers-color-scheme: dark) {
+  .glass-card {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* 21st.dev Magic - Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
