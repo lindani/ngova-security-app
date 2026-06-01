@@ -124,9 +124,20 @@ export default function Footer() {
       </div>
 
       {/* Sub-Footer Copyright Area */}
-      <div className="max-w-container-max mx-auto px-gutter mt-10 sm:mt-16 pt-6 sm:pt-8 border-t border-white/5">
+      <div className="max-w-container-max mx-auto px-gutter mt-10 sm:mt-16 pt-6 sm:pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
         <p className="text-on-surface-variant text-xs opacity-60 text-center sm:text-left">
           &copy; {currentYear} Ngova Security Services. All Rights Reserved.
+        </p>
+        <p className="text-on-surface-variant text-xs opacity-60 text-center sm:text-right">
+          Built by{' '}
+          <a 
+            href="https://www.linkedin.com/in/lindani-pani-81916b100/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-on-surface-variant hover:text-primary font-medium underline underline-offset-4 decoration-white/20 hover:decoration-primary transition-colors"
+          >
+            Lindani Pani
+          </a>
         </p>
       </div>
     </footer>
