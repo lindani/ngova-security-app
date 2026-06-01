@@ -234,10 +234,10 @@ export default function HomePage() {
               <img 
                 src={item.url} 
                 alt={item.title} 
-                className="absolute inset-0 w-full h-full object-cover transition-all duration-700 filter grayscale-[80%] group-hover:grayscale-0 group-hover:scale-110"
+                className="absolute inset-0 w-full h-full object-cover transition-all duration-700 filter md:grayscale-[80%] md:group-hover:grayscale-0 md:group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-fortress-black/90 via-fortress-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 translate-y-8 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+              <div className="absolute inset-0 bg-gradient-to-t from-fortress-black/90 via-fortress-black/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 translate-y-0 md:translate-y-8 md:group-hover:translate-y-0 opacity-100 transition-all duration-500">
                 <h3 className="text-white text-lg sm:text-headline-md font-headline-md mb-1 sm:mb-2">{item.title}</h3>
                 <p className="text-on-surface-variant text-xs sm:text-body-md">Field-proven tactical execution.</p>
               </div>
@@ -262,10 +262,10 @@ export default function HomePage() {
                   <img 
                     src={item.url} 
                     alt={item.title} 
-                    className="absolute inset-0 w-full h-full object-cover transition-all duration-700 filter grayscale-[80%] group-hover:grayscale-0 group-hover:scale-110"
+                    className="absolute inset-0 w-full h-full object-cover transition-all duration-700 filter md:grayscale-[80%] md:group-hover:grayscale-0 md:group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-fortress-black/90 via-fortress-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 translate-y-6 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-t from-fortress-black/90 via-fortress-black/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 translate-y-0 md:translate-y-6 md:group-hover:translate-y-0 opacity-100 transition-all duration-500">
                     <h3 className="text-white font-headline-md mb-1 sm:mb-2 text-sm sm:text-base">{item.title}</h3>
                     <p className="text-on-surface-variant font-body-md text-xs sm:text-sm">Field-proven tactical execution.</p>
                   </div>
