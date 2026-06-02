@@ -14,10 +14,11 @@ const navLinks = [
     label: 'Services',
     icon: 'security',
     submenu: [
-      { title: 'Security Services', description: 'Professional guarding & protection' },
-      { title: 'Mobile Patrols', description: 'Rapid response teams' },
-      { title: 'Monitoring', description: '24/7 surveillance solutions' },
-      { title: 'Consulting', description: 'Risk assessment & planning' }
+      { title: 'Physical Guarding', description: 'Professional guarding & protection', to: '/services#physical-guarding' },
+      { title: 'Risk Assessment', description: 'Advanced threat modeling & analysis', to: '/services#risk-assessment' },
+      { title: 'Access Control', description: 'Biometric & identity entry workflows', to: '/services#access-control' },
+      { title: '24/7 Monitoring', description: 'Continuous surveillance solutions', to: '/services#monitoring' },
+      { title: 'Tactical Deployment', description: 'Agile rapid response & patrols', to: '/services#tactical-deployment' }
     ]
   },
   { 
@@ -40,6 +41,11 @@ const navLinks = [
 const searchableContent = [
   { title: 'Home', path: '/', keywords: ['home', 'main', 'hero'] },
   { title: 'Services', path: '/services', keywords: ['services', 'security', 'protection', 'guarding', 'monitoring'] },
+  { title: 'Physical Guarding', path: '/services#physical-guarding', keywords: ['guarding', 'officers', 'on-site', 'physical'] },
+  { title: 'Risk Assessment', path: '/services#risk-assessment', keywords: ['risk', 'assessment', 'audit', 'threat'] },
+  { title: 'Access Control', path: '/services#access-control', keywords: ['access', 'control', 'biometric', 'identity'] },
+  { title: '24/7 Monitoring', path: '/services#monitoring', keywords: ['monitoring', 'surveillance', 'cctv', 'operations'] },
+  { title: 'Tactical Deployment', path: '/services#tactical-deployment', keywords: ['tactical', 'deployment', 'fleet', 'patrols', 'response'] },
   { title: 'Clients', path: '/clients', keywords: ['clients', 'partners', 'partnerships', 'trust'] },
   { title: 'Careers', path: '/careers', keywords: ['careers', 'jobs', 'work', 'employment'] },
   { title: 'Contact', path: '/quote', keywords: ['contact', 'quote', 'request', 'inquiry'] },
@@ -52,6 +58,7 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [openDropdown, setOpenDropdown] = useState(null)
+  const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -67,6 +74,7 @@ export default function Navbar() {
     setMobileOpen(false)
     setOpenDropdown(null)
     setSearchOpen(false)
+    setMobileSubmenuOpen(false)
   }, [location])
 
   const handleSearch = (query) => {
@@ -155,7 +163,7 @@ export default function Navbar() {
                       {link.submenu.map((item, idx) => (
                         <button
                           key={idx}
-                          onClick={() => navigate(link.to)}
+                          onClick={() => navigate(item.to)}
                           className="w-full text-left px-4 py-3 rounded-md hover:bg-primary/15 transition-colors duration-200 group/item border border-transparent hover:border-primary/20"
                         >
                           <p className="text-white font-500 group-hover/item:text-primary transition-colors">{item.title}</p>
@@ -294,6 +302,47 @@ export default function Navbar() {
           <div className="px-gutter py-4 space-y-1">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.to
+              const hasSubmenu = link.submenu && link.submenu.length > 0
+
+              if (hasSubmenu) {
+                return (
+                  <div key={link.to} className="space-y-1">
+                    <button
+                      onClick={() => setMobileSubmenuOpen(!mobileSubmenuOpen)}
+                      className={`w-full flex items-center justify-between px-3 py-3.5 rounded-lg text-sm font-medium transition-all border-l-2 ${
+                        isActive || mobileSubmenuOpen
+                          ? 'text-primary bg-primary/10 border-primary'
+                          : 'text-on-surface-variant border-transparent hover:bg-white/5'
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <span className="material-symbols-outlined text-xl opacity-75">{link.icon}</span>
+                        <span>{link.label}</span>
+                      </div>
+                      <span className={`material-symbols-outlined transition-transform duration-200 ${mobileSubmenuOpen ? 'rotate-180' : ''}`}>
+                        expand_more
+                      </span>
+                    </button>
+                    
+                    {/* Collapsible Mobile Submenu */}
+                    {mobileSubmenuOpen && (
+                      <div className="pl-10 pr-2 py-1 space-y-1 bg-white/[0.01] rounded-lg border border-white/5">
+                        {link.submenu.map((item, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => navigate(item.to)}
+                            className="w-full text-left py-2.5 text-sm text-on-surface-variant hover:text-white transition-colors block border-b border-white/5 last:border-none"
+                          >
+                            <p className="font-medium text-white">{item.title}</p>
+                            <p className="text-xs text-on-surface-variant/80 mt-0.5">{item.description}</p>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )
+              }
+
               return (
                 <Link
                   key={link.to}

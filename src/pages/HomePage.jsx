@@ -37,7 +37,7 @@ export default function HomePage() {
 
   useRevealAll(containerRef, '.reveal-hidden')
 
-  // Hero background transition cycle (adjusted to match duration metrics)
+  // Hero background transition cycle
   useEffect(() => {
     const imageInterval = setInterval(() => {
       setCurrentHeroIndex((prev) => (prev + 1) % HERO_BACKGROUND_IMAGES.length);
@@ -56,7 +56,6 @@ export default function HomePage() {
       const scrollAmount = 320;
       const maxScroll = carousel.scrollWidth - carousel.clientWidth;
       
-      // Smooth reset logic
       if (carousel.scrollLeft >= maxScroll - 10) {
         carousel.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
@@ -94,29 +93,28 @@ export default function HomePage() {
     <main ref={containerRef}>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] md:min-h-screen flex items-center pt-28 md:pt-36 pb-16 lg:pb-24 overflow-hidden bg-fortress-black">
-        {/* Layered Sliding & Zooming Background Carousel */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-fortress-black">
-        {HERO_BACKGROUND_IMAGES.map((url, index) => (
-          <div
-            key={url}
-            className="absolute inset-0 w-full h-full transition-all duration-[1200ms] ease-in-out"
-            style={{ 
-              transform: `translateX(${(index - currentHeroIndex) * 100}%)`,
-              opacity: index === currentHeroIndex ? 0.6 : 0
-            }}
-          >
-            <img
-              src={url}
-              alt={`Hero background ${index + 1}`}
-              className="w-full h-full object-cover transition-transform duration-[8000ms] ease-out"
-              style={{
-                transform: index === currentHeroIndex ? 'scale(1.12)' : 'scale(1.0)',
+          {HERO_BACKGROUND_IMAGES.map((url, index) => (
+            <div
+              key={url}
+              className="absolute inset-0 w-full h-full transition-all duration-[1200ms] ease-in-out"
+              style={{ 
+                transform: `translateX(${(index - currentHeroIndex) * 100}%)`,
+                opacity: index === currentHeroIndex ? 0.6 : 0
               }}
-            />
-          </div>
-        ))}
-        <div className="absolute inset-0 z-10 hero-gradient"></div>
-      </div>
+            >
+              <img
+                src={url}
+                alt={`Hero background ${index + 1}`}
+                className="w-full h-full object-cover transition-transform duration-[8000ms] ease-out"
+                style={{
+                  transform: index === currentHeroIndex ? 'scale(1.12)' : 'scale(1.0)',
+                }}
+              />
+            </div>
+          ))}
+          <div className="absolute inset-0 z-10 hero-gradient"></div>
+        </div>
 
         <div className="relative z-10 max-w-container-max mx-auto px-gutter w-full reveal-hidden" id="hero-content">
           <div className="max-w-3xl lg:max-w-4xl">
@@ -161,71 +159,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* Core Competencies (Bento Grid) */}
-      <section className="py-section-gap max-w-container-max mx-auto px-gutter bg-background" id="services">
-        <div className="mb-12 sm:mb-16 reveal-hidden">
-          <h2 className="text-3xl sm:text-headline-md font-display-lg text-white mb-4">Core Competencies</h2>
-          <p className="text-on-surface-variant max-w-2xl text-base sm:text-body-lg">A sophisticated blend of physical protection and tactical field security for critical installations.</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          {/* Physical Guarding */}
-          <div className="md:col-span-8 group relative overflow-hidden rounded-xl h-[350px] sm:h-[450px] border border-border-subtle glass-card reveal-hidden">
-            <img alt="Physical Guarding Team" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-75 saturate-50" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=800&fit=crop"/>
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(rgba(12, 19, 34, 0) 40%, rgba(12, 19, 34, 0.95) 100%)' }}></div>
-            <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end">
-              <div className="flex items-center gap-3 mb-3 sm:mb-4">
-                <span className="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-full" style={{ fontVariationSettings: "'FILL' 1" }}>shield</span>
-                <h3 className="text-xl sm:text-headline-md font-display-lg text-white">Physical Guarding</h3>
-              </div>
-              <p className="text-on-surface-variant max-w-md text-sm sm:text-body-md">Professional, specialized personnel deployment for corporate assets and elite facilities.</p>
-            </div>
-          </div>
-          {/* Risk Assessment */}
-          <div className="md:col-span-4 glass-card p-6 sm:p-10 rounded-xl flex flex-col justify-center border-subtle hover:border-primary/50 transition-colors reveal-hidden">
-            <div className="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center mb-6 sm:mb-8 border border-white/5">
-              <span className="material-symbols-outlined text-primary">analytics</span>
-            </div>
-            <div>
-              <h3 className="text-xl sm:text-headline-md font-headline-md text-white mb-2 sm:mb-4">Risk Assessment</h3>
-              <p className="text-on-surface-variant text-sm sm:text-body-md">Advanced threat modeling and comprehensive vulnerability analysis for business networks.</p>
-            </div>
-          </div>
-          {/* Access Control */}
-          <div className="md:col-span-4 glass-card p-6 sm:p-10 rounded-xl flex flex-col justify-center border-subtle hover:border-primary/50 transition-colors reveal-hidden">
-            <div className="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center mb-6 sm:mb-8 border border-white/5">
-              <span className="material-symbols-outlined text-primary">key</span>
-            </div>
-            <div>
-              <h3 className="text-xl sm:text-headline-md font-headline-md text-white mb-2 sm:mb-4">Access Control</h3>
-              <p className="text-on-surface-variant text-sm sm:text-body-md">Biometric and digital identity check systems unified into a smooth entry workflow.</p>
-            </div>
-          </div>
-          {/* Monitoring Center */}
-          <div className="md:col-span-8 group relative overflow-hidden rounded-xl h-[350px] sm:h-[450px] border border-subtle glass-card reveal-hidden">
-            <img alt="Monitoring Center" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-75 saturate-[0.8]" src="https://images.unsplash.com/photo-1557821552-17105176677c?w=1200&h=800&fit=crop"/>
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(rgba(12, 19, 34, 0) 40%, rgba(12, 19, 34, 0.95) 100%)' }}></div>
-            <div className="absolute inset-0 p-6 sm:p-10 flex flex-col justify-end">
-              <div className="flex items-center gap-3 mb-3 sm:mb-4">
-                <span className="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-full" style={{ fontVariationSettings: "'FILL' 1" }}>visibility</span>
-                <h3 className="text-xl sm:text-headline-md font-display-lg text-white">24/7 Monitoring</h3>
-              </div>
-              <p className="text-on-surface-variant max-w-md text-sm sm:text-body-md">Continuous surveillance and rapid-response dispatch through our high-tech operations rooms.</p>
-            </div>
-          </div>
-          {/* Tactical Fleet */}
-          <div className="md:col-span-12 group relative overflow-hidden rounded-xl h-[350px] sm:h-[500px] border border-subtle glass-card reveal-hidden">
-            <img alt="Security Fleet and Personnel" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-[0.6] saturate-50" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&h=900&fit=crop"/>
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(rgba(12, 19, 34, 0) 40%, rgba(12, 19, 34, 0.95) 100%)' }}></div>
-            <div className="absolute inset-0 p-6 sm:p-12 flex flex-col justify-end">
-              <div className="flex items-center gap-3 mb-3 sm:mb-4">
-                <span className="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-full" style={{ fontVariationSettings: "'FILL' 1" }}>local_police</span>
-                <h3 className="text-2xl sm:text-display-lg font-display-lg text-white">Tactical Deployment</h3>
-              </div>
-              <p className="text-on-surface-variant max-w-2xl text-sm sm:text-body-lg">Active responsive units and perimeter patrols utilizing optimized tracking vehicle fleets.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Expertise Gallery */}
       <section className="py-section-gap max-w-container-max mx-auto px-gutter" id="gallery">
@@ -234,7 +167,6 @@ export default function HomePage() {
           <h2 className="text-3xl sm:text-headline-md font-display-lg text-white">Our Expertise in Action</h2>
         </div>
         
-        {/* Main Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[250px] sm:auto-rows-[300px] mb-12">
           {BENTO_GALLERY_ITEMS.map((item) => (
             <div key={item.i} className={`relative rounded-xl overflow-hidden group glass-card reveal-hidden ${item.i === 1 || item.i === 4 ? 'md:col-span-2' : ''}`}>
@@ -252,7 +184,6 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Horizontal Scrolling Carousel */}
         <div 
           className="relative group w-full"
           onMouseEnter={handleCarouselInteraction}
@@ -281,7 +212,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Arrow Controls */}
           <button
             onClick={() => scrollCarousel('left')}
             onMouseEnter={handleCarouselInteraction}
@@ -313,7 +243,6 @@ export default function HomePage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Testimonial 1 */}
             <div className="glass-card border border-white/5 bg-white/[0.01] p-6 sm:p-8 rounded-xl flex flex-col justify-between reveal-hidden hover:border-primary/20 transition-all duration-300">
               <div>
                 <div className="flex text-primary mb-4">
@@ -336,7 +265,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Testimonial 2 */}
             <div className="glass-card border border-white/5 bg-white/[0.01] p-6 sm:p-8 rounded-xl flex flex-col justify-between reveal-hidden hover:border-primary/20 transition-all duration-300">
               <div>
                 <div className="flex text-primary mb-4">
@@ -359,7 +287,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Testimonial 3 */}
             <div className="glass-card border border-white/5 bg-white/[0.01] p-6 sm:p-8 rounded-xl flex flex-col justify-between md:col-span-2 lg:col-span-1 reveal-hidden hover:border-primary/20 transition-all duration-300">
               <div>
                 <div className="flex text-primary mb-4">

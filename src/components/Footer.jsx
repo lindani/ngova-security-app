@@ -41,23 +41,28 @@ export default function Footer() {
           </p>
           <ul className="flex flex-col gap-2.5 sm:gap-3.5">
             <li>
-              <Link className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm block py-0.5" to="/services">
+              <Link className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm block py-0.5" to="/services#physical-guarding">
                 Physical Guarding
               </Link>
             </li>
             <li>
-              <Link className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm block py-0.5" to="/services">
+              <Link className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm block py-0.5" to="/services#access-control">
                 Access Control
               </Link>
             </li>
             <li>
-              <Link className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm block py-0.5" to="/services">
+              <Link className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm block py-0.5" to="/services#risk-assessment">
                 Risk Assessment
               </Link>
             </li>
             <li>
-              <Link className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm block py-0.5" to="/services">
+              <Link className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm block py-0.5" to="/services#monitoring">
                 Surveillance
+              </Link>
+            </li>
+            <li>
+              <Link className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm block py-0.5" to="/services#tactical-deployment">
+                Tactical Deployment
               </Link>
             </li>
           </ul>
