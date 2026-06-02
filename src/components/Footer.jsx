@@ -108,7 +108,7 @@ export default function Footer() {
             </li>
             <li>
               <a 
-                href="/documents/ngova-terms-of-service.pdf" 
+                href="/documents/ngova-terms-policy.pdf" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm flex items-center gap-1.5 py-0.5"
