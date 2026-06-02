@@ -68,7 +68,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Company Links */}
+        {/* Company & Compliance Links */}
         <div className="md:col-span-2">
           <p className="font-label-caps text-[11px] sm:text-xs text-primary mb-4 sm:mb-6 tracking-widest uppercase font-semibold">
             Company
@@ -85,13 +85,36 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <a className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm block py-0.5" href="#">
-                Privacy Policy
+              <a 
+                href="/documents/ngova-privacy-policy.pdf" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm flex items-center gap-1.5 py-0.5"
+              >
+                Privacy Policy (POPIA)
+                <span className="material-symbols-outlined text-xs opacity-40">open_in_new</span>
               </a>
             </li>
             <li>
-              <a className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm block py-0.5" href="#">
+              <a 
+                href="/documents/ngova-paia-manual.pdf" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm flex items-center gap-1.5 py-0.5"
+              >
+                PAIA Manual
+                <span className="material-symbols-outlined text-xs opacity-40">open_in_new</span>
+              </a>
+            </li>
+            <li>
+              <a 
+                href="/documents/ngova-terms-of-service.pdf" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-on-surface-variant hover:text-primary transition-colors text-xs sm:text-sm flex items-center gap-1.5 py-0.5"
+              >
                 Terms of Service
+                <span className="material-symbols-outlined text-xs opacity-40">open_in_new</span>
               </a>
             </li>
           </ul>
@@ -128,10 +151,19 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Statutory Corporate Disclosures Banner */}
+      <div className="max-w-container-max mx-auto px-gutter mt-12 pt-6 border-t border-white/5">
+        <p className="text-[11px] text-on-surface-variant/50 leading-relaxed text-center md:text-left tracking-wide">
+          <span className="text-on-surface-variant/70 font-semibold uppercase tracking-wider block md:inline md:mr-2">Statutory Disclosure:</span>
+          Ngova Trading (Pty) Ltd As Ngova Security Services &bull; Registration No: 2016/035498/07 &bull; PSIRA Registration No: 2766562. 
+          Registered in accordance with the Private Security Industry Regulation Act 56 of 2001.
+        </p>
+      </div>
+
       {/* Sub-Footer Copyright Area */}
-      <div className="max-w-container-max mx-auto px-gutter mt-10 sm:mt-16 pt-6 sm:pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="max-w-container-max mx-auto px-gutter mt-6 pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
         <p className="text-on-surface-variant text-xs opacity-60 text-center sm:text-left">
-          &copy; {currentYear} Ngova Security Services. All Rights Reserved.
+          &copy; {currentYear} Ngova Trading (Pty) Ltd As Ngova Security Services. All Rights Reserved.
         </p>
         <p className="text-on-surface-variant text-xs opacity-60 text-center sm:text-right">
           Built by{' '}
