@@ -3,19 +3,19 @@ import { Link } from 'react-router-dom'
 import { useRevealAll } from '../hooks/useReveal'
 
 const BENTO_GALLERY_ITEMS = [
-  { i: 1, url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&h=600&fit=crop', title: 'Security Operations' },
-  { i: 2, url: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=600&fit=crop', title: 'Control Center' },
-  { i: 3, url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop', title: 'Team Coordination' },
-  { i: 4, url: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1600&h=600&fit=crop', title: 'Field Deployment' }
+  { i: 1, url: '/images/homepage/gallery-4.jpg?w=1600&h=600&fit=crop', title: 'Security Operations' },
+  { i: 2, url: '/images/homepage/gallery-1.jpg?w=800&h=600&fit=crop', title: 'Control Center' },
+  { i: 3, url: '/images/homepage/gallery-3.jpg?w=800&h=600&fit=crop', title: 'Team Coordination' },
+  { i: 4, url: '/images/homepage/gallery-5.jpg?w=1600&h=600&fit=crop', title: 'Field Deployment' }
 ]
 
 const SCROLL_CAROUSEL_ITEMS = [
-  { i: 5, url: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&h=600&fit=crop', title: 'Perimeter Security' },
-  { i: 6, url: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&h=600&fit=crop', title: 'Infrastructure Guard' },
-  { i: 7, url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop', title: 'Asset Protection' },
-  { i: 8, url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=600&fit=crop', title: 'Retail Security' },
-  { i: 9, url: 'https://images.unsplash.com/photo-1554224311-beee415c15c7?w=800&h=600&fit=crop', title: 'Executive Security' },
-  { i: 10, url: 'https://images.unsplash.com/photo-1558002038-1055907df827?w=800&h=600&fit=crop', title: 'Access Systems' }
+  { i: 5, url: '/images/homepage/perimeter-security.jpg?w=800&h=600&fit=crop', title: 'Perimeter Security' },
+  { i: 6, url: '/images/homepage/infrastructure-guard.jpg?w=800&h=600&fit=crop', title: 'Infrastructure Guard' },
+  { i: 7, url: '/images/homepage/asset-protection.jpg?w=800&h=600&fit=crop', title: 'Asset Protection' },
+  { i: 8, url: '/images/homepage/gallery-2.jpg?w=800&h=600&fit=crop', title: 'Retail Security' },
+  { i: 9, url: '/images/homepage/executive-security.jpg?w=800&h=600&fit=crop', title: 'Executive Security' },
+  { i: 10, url: '/images/homepage/access-systems.jpg?w=800&h=600&fit=crop', title: 'Access Systems' }
 ]
 
 const HERO_BACKGROUND_IMAGES = [
