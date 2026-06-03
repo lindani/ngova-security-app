@@ -9,7 +9,7 @@ const clients = [
     name: 'ASLA Civils',
     category: 'CIVIL ENGINEERING',
     description: 'Securing machinery and critical infrastructure development projects across the Western Cape with 24/7 tactical monitoring.',
-    logo: '/logos/asla.jpg',
+    logo: '/logos/Asla-Logo.png',
     image: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&h=600&fit=crop',
     website: 'https://www.asla.co.za',
     featured: true,
@@ -64,13 +64,24 @@ const clients = [
     website: 'https://www.boxerstores.com',
     featured_size: 'md:col-span-4',
     carousel: true
+  },
+  {
+    id: 'broadway-business-center',
+    name: 'Broadway Business Center',
+    category: 'RETAIL LOGISTICS',
+    short_description: 'Retail Loss Prevention',
+    description: 'Asset containment, loss prevention vectors, and fast deployment networks for nationwide supply depots.',
+    image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=600&fit=crop',
+    logo: '/logos/Broadway-Business-Centre.jpg',
+    website: 'https://www.broadwaybusinesscenter.com',
+    featured_size: 'md:col-span-4',
+    carousel: true
   }
 ]
 
 export default function ClientsPage() {
   const containerRef = useRef(null)
   const carouselRef = useRef(null)
-  const [carouselScroll, setCarouselScroll] = useState(0)
   const [isAutoScrolling, setIsAutoScrolling] = useState(true)
   const autoScrollIntervalRef = useRef(null)
   useRevealAll(containerRef, '.reveal-on-scroll')
@@ -84,14 +95,14 @@ export default function ClientsPage() {
       
       const scrollAmount = 320
       const maxScroll = carousel.scrollWidth - carousel.clientWidth
+      // FIX: Dynamically read live scroll positions to keep manual touch interactions in sync
       let newScroll = carousel.scrollLeft + scrollAmount
       
-      if (newScroll > maxScroll) {
+      if (newScroll >= maxScroll - 5) {
         newScroll = 0
       }
       
       carousel.scrollTo({ left: newScroll, behavior: 'smooth' })
-      setCarouselScroll(newScroll)
     }, 4500)
 
     return () => clearInterval(autoScrollIntervalRef.current)
@@ -104,19 +115,10 @@ export default function ClientsPage() {
     setIsAutoScrolling(false)
     const scrollAmount = 320
     const newScroll = direction === 'left' 
-      ? Math.max(0, carouselScroll - scrollAmount)
-      : carouselScroll + scrollAmount
+      ? Math.max(0, carousel.scrollLeft - scrollAmount)
+      : Math.min(carousel.scrollWidth - carousel.clientWidth, carousel.scrollLeft + scrollAmount)
+      
     carousel.scrollTo({ left: newScroll, behavior: 'smooth' })
-    setCarouselScroll(newScroll)
-  }
-
-  const handleCarouselInteraction = () => {
-    setIsAutoScrolling(false)
-    clearInterval(autoScrollIntervalRef.current)
-  }
-
-  const handleCarouselLeave = () => {
-    setIsAutoScrolling(true)
   }
 
   const carouselClients = clients.filter(c => c.carousel)
@@ -157,9 +159,8 @@ export default function ClientsPage() {
                     <img alt={client.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-45" src={client.image}/>
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"></div>
                     
-                    {/* Bounded Container with Contain Alignment */}
-                    <div className="absolute top-6 left-6 bg-black/60 backdrop-blur-md w-44 h-20 p-4 rounded-xl border border-white/10 z-10 flex items-center justify-center shadow-2xl">
-                      <img src={client.logo} alt={client.name} className="w-full h-full object-contain" />
+                    <div className="absolute top-4 left-4 sm:top-6 sm:left-6 bg-white w-36 h-16 sm:w-44 sm:h-20 p-3 sm:p-4 rounded-xl z-10 flex items-center justify-center shadow-2xl ring-1 ring-white/20">
+                      <img src={client.logo} alt={client.name} className="max-w-full max-h-full object-contain drop-shadow-sm" />
                     </div>
                   </div>
                   <div className="p-5 sm:p-8 flex-1 flex flex-col justify-between">
@@ -182,9 +183,8 @@ export default function ClientsPage() {
                   <img alt={client.name} className="absolute inset-0 w-full h-full object-cover opacity-25 grayscale group-hover:grayscale-0 transition-all duration-700" src={client.image}/>
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/90 md:via-background/70 to-transparent"></div>
                   
-                  {/* Bounded Container with Contain Alignment */}
-                  <div className="absolute top-6 left-6 bg-black/60 backdrop-blur-md w-44 h-20 p-4 rounded-xl border border-white/10 z-10 flex items-center justify-center shadow-2xl">
-                    <img src={client.logo} alt={client.name} className="w-full h-full object-contain" />
+                  <div className="absolute top-4 left-4 sm:top-6 sm:left-6 bg-white w-36 h-16 sm:w-44 sm:h-20 p-3 sm:p-4 rounded-xl z-10 flex items-center justify-center shadow-2xl ring-1 ring-white/20">
+                    <img src={client.logo} alt={client.name} className="max-w-full max-h-full object-contain drop-shadow-sm" />
                   </div>
 
                   <div className="relative p-5 sm:p-8 h-full flex flex-col justify-end z-10 pt-32">
@@ -222,8 +222,6 @@ export default function ClientsPage() {
             
             <div
               ref={carouselRef}
-              onMouseEnter={handleCarouselInteraction}
-              onMouseLeave={handleCarouselLeave}
               className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory hide-scrollbar animate-fade-in"
             >
               {carouselClients.map((client) => (
@@ -234,13 +232,12 @@ export default function ClientsPage() {
                   <a href={client.website} target="_blank" rel="noopener noreferrer" className="group/card block">
                     <div className="relative h-[400px] sm:h-[440px] rounded-xl overflow-hidden glass-card border border-white/5 bg-neutral-900/40 cursor-pointer flex flex-col justify-between p-6">
                       
-                      {/* Bounded Contain Frame for Carousels */}
-                      <div className="h-24 w-full flex items-center justify-center bg-white/[0.04] border border-white/10 rounded-xl p-4 backdrop-blur-sm z-10 transition-all group-hover/card:bg-white/[0.08] group-hover/card:border-white/20 shadow-inner">
+                      <div className="h-20 sm:h-24 w-full flex items-center justify-center bg-white rounded-xl p-4 z-10 transition-all duration-300 group-hover/card:shadow-[0_0_24px_rgba(255,255,255,0.15)] group-hover/card:scale-[1.02] shadow-md">
                         {client.logo && (
                           <img 
                             src={client.logo} 
                             alt={`${client.name} logo`} 
-                            className="w-full h-full object-contain opacity-95 group-hover/card:opacity-100 group-hover/card:scale-105 transition-all duration-300" 
+                            className="max-w-full max-h-full object-contain group-hover/card:scale-105 transition-transform duration-300" 
                           />
                         )}
                       </div>
@@ -333,9 +330,10 @@ export default function ClientsPage() {
           <Link className="bg-primary text-on-primary px-8 py-3.5 rounded-lg font-body-md font-bold text-sm text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/10" to="/quote">
             Consult with an Expert
           </Link>
-          <button className="border border-white/10 hover:bg-white/5 px-8 py-3.5 rounded-lg font-body-md text-sm text-center text-white transition-all">
+          {/* FIXED: Catalog link now properly routes via Link to /services */}
+          <Link className="border border-white/10 hover:bg-white/5 px-8 py-3.5 rounded-lg font-body-md text-sm text-center text-white transition-all flex items-center justify-center" to="/services">
             View Service Catalog
-          </button>
+          </Link>
         </div>
       </section>
     </div>
