@@ -33,7 +33,7 @@ export default function HomePage() {
   const carouselRef        = useRef(null)
   const imgRefs            = useRef([])           // one ref per hero image
   const [activeIndex, setActiveIndex] = useState(0)
-  const [isAutoScrolling, setIsAutoScrolling] = useState(true)
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true) // kept for manual arrow state
   const autoScrollIntervalRef = useRef(null)
 
   useRevealAll(containerRef, '.reveal-hidden')
@@ -61,25 +61,35 @@ export default function HomePage() {
   }, [])
 
   // ── Gallery carousel auto-scroll ─────────────────────────────────────────
-  useEffect(() => {
-    if (!isAutoScrolling) return
-    const id = setInterval(() => {
+  // Use a ref for the interval so pause/resume works without stale closures
+  const carouselIntervalRef = useRef(null)
+
+  const startCarousel = () => {
+    stopCarousel()
+    carouselIntervalRef.current = setInterval(() => {
       const c = carouselRef.current
       if (!c) return
-      if (c.scrollLeft >= c.scrollWidth - c.clientWidth - 10) {
-        c.scrollTo({ left: 0, behavior: 'smooth' })
-      } else {
-        c.scrollBy({ left: 320, behavior: 'smooth' })
-      }
-    }, 4000)
-    return () => clearInterval(id)
-  }, [isAutoScrolling])
+      const atEnd = c.scrollLeft >= c.scrollWidth - c.clientWidth - 10
+      c.scrollTo({ left: atEnd ? 0 : c.scrollLeft + c.clientWidth * 0.75, behavior: 'smooth' })
+    }, 3200)
+  }
+
+  const stopCarousel = () => {
+    clearInterval(carouselIntervalRef.current)
+  }
+
+  // Kick off on mount, never restart unless explicitly resumed
+  useEffect(() => {
+    startCarousel()
+    return stopCarousel
+  }, [])
 
   const scrollCarousel = (dir) => {
     const c = carouselRef.current
     if (!c) return
+    stopCarousel()
     setIsAutoScrolling(false)
-    c.scrollBy({ left: dir === 'left' ? -320 : 320, behavior: 'smooth' })
+    c.scrollBy({ left: dir === 'left' ? -(c.clientWidth * 0.75) : c.clientWidth * 0.75, behavior: 'smooth' })
   }
 
   const goToSlide = (i) => {
@@ -236,8 +246,8 @@ export default function HomePage() {
         {/* Scroll carousel */}
         <div
           className="relative group w-full"
-          onMouseEnter={() => { setIsAutoScrolling(false); clearInterval(autoScrollIntervalRef.current) }}
-          onMouseLeave={() => setIsAutoScrolling(true)}
+          onMouseEnter={stopCarousel}
+          onMouseLeave={startCarousel}
         >
           <div
             ref={carouselRef}
