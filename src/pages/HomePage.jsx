@@ -18,15 +18,6 @@ const SCROLL_CAROUSEL_ITEMS = [
   { i: 10, url: '/images/homepage/access-systems.jpg?w=800&h=600&fit=crop', title: 'Access Systems' }
 ]
 
-const HERO_BACKGROUND_IMAGES = [
-  '/images/hero/hero-1.jpg',
-  '/images/hero/hero-2.jpg',
-  '/images/hero/hero-3.jpg'
-]
-
-const SLIDE_DURATION_S = 6
-const FADE_DURATION_S  = 1.4
-
 const TESTIMONIALS = [
   {
     initials: 'EP',
@@ -70,28 +61,9 @@ export default function HomePage() {
   const containerRef   = useRef(null)
   const carouselRef    = useRef(null)
   const testimonialCarouselRef = useRef(null)
-  const zoomRefs       = useRef([])
-  const [activeIndex, setActiveIndex] = useState(0)
   const [isAutoScrolling, setIsAutoScrolling] = useState(true)
 
   useRevealAll(containerRef, '.reveal-hidden')
-
-  // ── Hero zoom restart ────────────────────────────────────────────────────
-  useEffect(() => {
-    const el = zoomRefs.current[activeIndex]
-    if (!el) return
-    el.classList.remove('hero-zoom')
-    void el.offsetWidth
-    el.classList.add('hero-zoom')
-  }, [activeIndex])
-
-  // ── Hero slide interval ──────────────────────────────────────────────────
-  useEffect(() => {
-    const id = setInterval(() => {
-      setActiveIndex(prev => (prev + 1) % HERO_BACKGROUND_IMAGES.length)
-    }, SLIDE_DURATION_S * 1000)
-    return () => clearInterval(id)
-  }, [])
 
   // ── Gallery carousel ─────────────────────────────────────────────────────
   const carouselIntervalRef = useRef(null)
@@ -118,7 +90,7 @@ export default function HomePage() {
     c.scrollBy({ left: dir === 'left' ? -(c.clientWidth * 0.75) : c.clientWidth * 0.75, behavior: 'smooth' })
   }
 
-  // ── Testimonials Carousel (Mirrors Gallery Logic) ────────────────────────
+  // ── Testimonials Carousel ────────────────────────────────────────────────
   const testimonialIntervalRef = useRef(null)
 
   const startTestimonialCarousel = () => {
@@ -126,11 +98,9 @@ export default function HomePage() {
     testimonialIntervalRef.current = setInterval(() => {
       const t = testimonialCarouselRef.current
       if (!t) return
-      // Check if carousel has reached the end of its scroll capacity
       const atEnd = t.scrollLeft >= t.scrollWidth - t.clientWidth - 10
-      // Batch scroll by full container width space to rotate out the batch of three
       t.scrollTo({ left: atEnd ? 0 : t.scrollLeft + t.clientWidth, behavior: 'smooth' })
-    }, 5000) // 5 seconds step timing configuration
+    }, 5000)
   }
 
   const stopTestimonialCarousel = () => clearInterval(testimonialIntervalRef.current)
@@ -143,11 +113,9 @@ export default function HomePage() {
   const scrollTestimonials = (dir) => {
     const t = testimonialCarouselRef.current
     if (!t) return
-    stopTestimonialCarousel() // Stop auto-play once interacting via layout buttons
+    stopTestimonialCarousel()
     t.scrollBy({ left: dir === 'left' ? -t.clientWidth : t.clientWidth, behavior: 'smooth' })
   }
-
-  const goToSlide = (i) => { if (i !== activeIndex) setActiveIndex(i) }
 
   return (
     <main ref={containerRef}>
@@ -158,33 +126,29 @@ export default function HomePage() {
           to   { transform: scale(1.10); }
         }
         .hero-zoom {
-          animation: heroZoom ${SLIDE_DURATION_S + FADE_DURATION_S}s ease-out forwards;
+          animation: heroZoom 7.5s ease-out forwards;
         }
       `}</style>
 
       {/* ─── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[90vh] md:min-h-screen flex items-center pt-28 md:pt-36 pb-16 lg:pb-24 overflow-hidden bg-fortress-black">
+        
+        {/* Video Background with Poster Fallback */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-fortress-black">
-          {HERO_BACKGROUND_IMAGES.map((src, i) => (
-            <div
-              key={src}
-              className="absolute inset-0 w-full h-full"
-              style={{
-                opacity:       i === activeIndex ? 1 : 0,
-                transition:    `opacity ${FADE_DURATION_S}s ease-in-out`,
-                zIndex:        i === activeIndex ? 1 : 0,
-                pointerEvents: i === activeIndex ? 'auto' : 'none',
-              }}
-            >
-              <div
-                ref={el => { zoomRefs.current[i] = el }}
-                className={`absolute inset-0 w-full h-full${i === 0 ? ' hero-zoom' : ''}`}
-                style={{ transformOrigin: 'center center' }}
-              >
-                <img src={src} alt="" draggable={false} className="w-full h-full object-cover object-center select-none" />
-              </div>
-            </div>
-          ))}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/images/hero/hero-1.jpg"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            style={{ transformOrigin: 'center center' }}
+          >
+            <source src="/videos/security_heroes.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          
+          {/* Dark gradient overlay */}
           <div className="absolute inset-0 z-10 hero-gradient pointer-events-none" />
         </div>
 
@@ -212,6 +176,7 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Bottom Stats */}
         <div className="absolute bottom-12 right-gutter hidden lg:block reveal-hidden" id="hero-stats">
           <div className="glass-card p-6 flex gap-12 rounded-xl border border-white/10 backdrop-blur-md">
             <div>
@@ -228,20 +193,9 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Simple indicator */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-          {HERO_BACKGROUND_IMAGES.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goToSlide(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              className="rounded-full transition-all duration-300"
-              style={{
-                width:      i === activeIndex ? '24px' : '8px',
-                height:     '8px',
-                background: i === activeIndex ? 'var(--color-primary, #fff)' : 'rgba(255,255,255,0.3)',
-              }}
-            />
-          ))}
+          <div className="w-6 h-1.5 bg-primary rounded-full" />
         </div>
       </section>
 
@@ -300,7 +254,6 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Testimonial Component Wrapper Matching the Gallery Carousel Layout exactly */}
           <div className="relative group w-full" onMouseEnter={stopTestimonialCarousel} onMouseLeave={startTestimonialCarousel}>
             <div ref={testimonialCarouselRef} className="overflow-x-auto scrollbar-hide scroll-smooth w-full">
               <div className="flex gap-4 sm:gap-6 pb-4 px-0 sm:px-4">
@@ -329,7 +282,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Absolute Arrows mapped exactly to look and feel configurations of the visual action component block */}
             <button onClick={() => scrollTestimonials('left')} className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-r from-primary to-primary/80 text-white rounded-full shadow-lg transition-all opacity-0 group-hover:opacity-100 hover:scale-110 -ml-4 sm:-ml-8" aria-label="Scroll left">
               <span className="material-symbols-outlined text-lg sm:text-2xl">chevron_left</span>
             </button>
