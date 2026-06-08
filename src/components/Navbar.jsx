@@ -7,11 +7,13 @@ const navLinks = [
   { 
     to: '/', 
     label: 'Home',
+    description: 'Return to our main overview',
     icon: 'home'
   },
   { 
     to: '/services', 
     label: 'Services',
+    description: 'Explore our security solutions',
     icon: 'security',
     submenu: [
       { title: 'Physical Guarding', description: 'Professional guarding & protection', to: '/services#physical-guarding' },
@@ -24,16 +26,19 @@ const navLinks = [
   { 
     to: '/clients', 
     label: 'Clients',
+    description: 'Trusted by industry leaders',
     icon: 'business'
   },
   { 
     to: '/careers', 
     label: 'Careers',
+    description: 'Join the Ngova elite team',
     icon: 'work'
   },
   { 
     to: '/quote', 
     label: 'Contact',
+    description: 'Get in touch for a consultation',
     icon: 'mail'
   },
 ]
@@ -102,33 +107,23 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ease-in-out py-2 ${
-        scrolled
+        scrolled || mobileOpen || searchOpen
           ? 'bg-fortress-black/95 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.6)] border-b border-primary/15'
           : 'bg-fortress-black/5 backdrop-blur-sm border-b border-white/5'
       }`}
     >
       {/* Desktop Navbar */}
       <nav className="hidden md:flex justify-between items-center px-gutter max-w-container-max mx-auto w-full gap-4">
-        {/* Logo */}
-        <Link 
-          to="/" 
-          className="flex-shrink-0 transition-all duration-300 hover:scale-[1.02] relative group py-0.5 block"
-        >
+        <Link to="/" className="flex-shrink-0 transition-all duration-300 hover:scale-[1.02] relative group py-0.5 block">
           <div className="absolute inset-0 bg-fortress-black/40 blur-md rounded-lg opacity-100 group-hover:bg-fortress-black/60 transition-colors pointer-events-none -inset-x-2"></div>
-          <img 
-            alt="Ngova Security Logo" 
-            className="h-12 lg:h-14 w-auto object-contain relative z-10 transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] filter brightness-110" 
-            src={LOGO_URL} 
-          />
+          <img alt="Ngova Security Logo" className="h-12 lg:h-14 w-auto object-contain relative z-10 filter brightness-110" src={LOGO_URL} />
         </Link>
 
-        {/* Center Nav Links with Dropdowns */}
         <div className="flex items-center justify-center gap-0.5 lg:gap-1 flex-1">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.to
             const hasSubmenu = link.submenu && link.submenu.length > 0
             const isOpen = openDropdown === link.to
-            
             return (
               <div key={link.to} className="relative group">
                 <Link
@@ -136,39 +131,26 @@ export default function Navbar() {
                   onMouseEnter={() => hasSubmenu && setOpenDropdown(link.to)}
                   onMouseLeave={() => setOpenDropdown(null)}
                   className={`flex items-center gap-1.5 lg:gap-2 px-3 lg:px-4 py-2 rounded-md text-sm font-semibold transition-all duration-300 ${
-                    isActive
-                      ? 'text-primary bg-primary/15 border border-primary/30'
-                      : scrolled
-                        ? 'text-on-surface-variant hover:text-white hover:bg-white/5 border border-transparent'
-                        : 'text-white/90 hover:text-white hover:bg-white/10 border border-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]'
+                    isActive ? 'text-primary bg-primary/15 border border-primary/30' : 'text-white/90 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   <span className="material-symbols-outlined text-lg opacity-85">{link.icon}</span>
                   {link.label}
-                  {hasSubmenu && (
-                    <span className={`material-symbols-outlined text-sm transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-                      expand_more
-                    </span>
-                  )}
+                  {hasSubmenu && <span className={`material-symbols-outlined text-sm transition-transform ${isOpen ? 'rotate-180' : ''}`}>expand_more</span>}
                 </Link>
 
-                {/* Mega Menu Dropdown */}
                 {hasSubmenu && (
-                  <div
-                    onMouseEnter={() => setOpenDropdown(link.to)}
-                    onMouseLeave={() => setOpenDropdown(null)}
-                    className={`absolute left-0 top-full mt-1.5 w-80 bg-fortress-black/95 backdrop-blur-3xl border border-primary/20 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.7)] overflow-hidden transition-all duration-300 ${
+                  <div onMouseEnter={() => setOpenDropdown(link.to)} onMouseLeave={() => setOpenDropdown(null)}
+                    className={`absolute left-0 top-full mt-1.5 w-80 bg-fortress-black/95 backdrop-blur-3xl border border-primary/20 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.7)] transition-all duration-300 ${
                       isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
                     }`}
                   >
                     <div className="p-1">
                       {link.submenu.map((item, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => navigate(item.to)}
-                          className="w-full text-left px-4 py-3 rounded-md hover:bg-primary/15 transition-colors duration-200 group/item border border-transparent hover:border-primary/20"
+                        <button key={idx} onClick={() => navigate(item.to)}
+                          className="w-full text-left px-4 py-3 rounded-md hover:bg-primary/15 transition-colors group/item border border-transparent hover:border-primary/20"
                         >
-                          <p className="text-white font-semibold group-hover/item:text-primary transition-colors">{item.title}</p>
+                          <p className="text-white font-semibold group-hover/item:text-primary">{item.title}</p>
                           <p className="text-xs text-on-surface-variant/90 mt-1">{item.description}</p>
                         </button>
                       ))}
@@ -180,200 +162,96 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Right: Search & CTA */}
         <div className="flex items-center gap-3 flex-shrink-0">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              onFocus={() => setSearchOpen(true)}
-              className={`border text-white placeholder-on-surface-variant px-3 lg:px-4 py-2 pr-10 rounded-lg w-44 lg:w-56 focus:outline-none focus:border-primary/50 transition-all duration-200 text-sm ${
-                scrolled 
-                  ? 'bg-white/5 border-primary/20 focus:bg-white/8' 
-                  : 'bg-fortress-black/5 backdrop-blur-sm border-white/10 focus:bg-fortress-black/50'
-              }`}
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-lg pointer-events-none">
-              search
-            </span>
-
-            {/* Search Results Dropdown */}
-            {searchOpen && searchResults.length > 0 && (
-              <div className="absolute top-full mt-2 w-full bg-fortress-black border border-primary/30 rounded-lg shadow-xl z-10 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-                {searchResults.map((result, idx) => (
-                  <button
-                    key={result.path}
-                    onClick={() => handleSearchSelect(result.path)}
-                    className={`w-full text-left px-4 py-3 hover:bg-primary/20 transition-all duration-200 ${
-                      idx < searchResults.length - 1 ? 'border-b border-primary/10' : ''
-                    }`}
-                  >
-                    <p className="text-white font-500 text-sm">{result.title}</p>
-                    <p className="text-on-surface-variant text-xs mt-1">{result.keywords.slice(0, 2).join(' • ')}</p>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <Link
-            to="/quote"
-            className="bg-primary text-on-primary px-5 lg:px-6 py-2 font-bold hover:bg-primary/90 transition-all duration-200 rounded-md text-sm shadow-lg hover:shadow-xl hover:shadow-primary/30 flex items-center gap-2 whitespace-nowrap"
-          >
-            <span className="material-symbols-outlined text-lg">mail</span>
-            Get Quote
+          <Link to="/quote" className="bg-primary text-on-primary px-5 lg:px-6 py-2 font-bold hover:bg-primary/90 transition-all rounded-md text-sm shadow-lg flex items-center gap-2">
+            <span className="material-symbols-outlined text-lg">mail</span> Get Quote
           </Link>
         </div>
       </nav>
 
-      {/* Mobile Navbar */}
+      {/* Mobile Navbar Header */}
       <nav className="md:hidden flex justify-between items-center px-gutter w-full max-w-container-max mx-auto">
-        {/* Mobile Menu Toggle */}
-        <button
-          className="text-white h-9 w-9 hover:bg-white/5 rounded-lg transition-colors flex items-center justify-center drop-shadow-md"
-          onClick={() => {
-            setMobileOpen(!mobileOpen)
-            if (searchOpen) setSearchOpen(false)
-          }}
-          aria-label="Toggle menu"
-        >
-          <span className="material-symbols-outlined text-[28px] leading-none select-none">
-            {mobileOpen ? 'close' : 'menu'}
-          </span>
+        <button className="text-white h-9 w-9 hover:bg-white/5 rounded-lg flex items-center justify-center" onClick={() => setMobileOpen(!mobileOpen)}>
+          <span className="material-symbols-outlined text-[28px]">{mobileOpen ? 'close' : 'menu'}</span>
         </button>
-
-        {/* Mobile Logo */}
-        <Link to="/" className="flex-shrink-0 py-1 block h-11 flex items-center">
-          <img alt="Ngova Security Logo" className="h-8 w-auto object-contain filter drop-shadow-md" src={LOGO_URL} />
+        <Link to="/" className="flex-shrink-0 py-1 h-11 flex items-center">
+          <img alt="Ngova Security Logo" className="h-8 w-auto object-contain" src={LOGO_URL} />
         </Link>
-
-        {/* Mobile Search Toggle */}
-        <button
-          onClick={() => {
-            setSearchOpen(!searchOpen)
-            if (mobileOpen) setMobileOpen(false)
-          }}
-          className="text-white h-9 w-9 hover:bg-white/5 rounded-lg transition-colors flex items-center justify-center drop-shadow-md"
-          aria-label="Search"
-        >
-          <span className="material-symbols-outlined text-[28px] leading-none select-none">
-            {searchOpen ? 'close' : 'search'}
-          </span>
+        <button onClick={() => setSearchOpen(!searchOpen)} className="text-white h-9 w-9 hover:bg-white/5 rounded-lg flex items-center justify-center">
+          <span className="material-symbols-outlined text-[28px]">{searchOpen ? 'close' : 'search'}</span>
         </button>
       </nav>
 
-      {/* Mobile Search Bar */}
-      {searchOpen && (
-        <div className="md:hidden bg-fortress-black border-b border-primary/10 px-gutter py-3 animate-in fade-in slide-in-from-top duration-200 w-full">
-          <div className="relative mb-2">
-            <input
-              type="text"
-              placeholder="Search pages..."
-              autoFocus
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="w-full bg-white/5 border border-primary/20 text-white placeholder-on-surface-variant px-4 py-2 text-base md:text-sm pr-10 rounded-lg focus:outline-none focus:border-primary/50"
-            />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-md">
-              search
-            </span>
-          </div>
-
-          {/* Mobile Search Results list */}
-          {searchQuery.trim() !== '' && (
-            <div className="space-y-1 max-h-60 overflow-y-auto mt-2">
-              {searchResults.length > 0 ? (
-                searchResults.map((result) => (
-                  <button
-                    key={result.path}
-                    onClick={() => handleSearchSelect(result.path)}
-                    className="w-full text-left px-3 py-2.5 bg-white/[0.02] hover:bg-primary/20 rounded-lg transition-all border border-white/5"
-                  >
-                    <p className="text-white font-medium text-sm">{result.title}</p>
-                  </button>
-                ))
-              ) : (
-                <p className="text-on-surface-variant text-xs text-center py-3">No results found</p>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Mobile Dropdown Menu Container */}
+      {/* Mobile Dropdown Drop Drawer */}
       {mobileOpen && (
-        <div className="md:hidden bg-fortress-black/98 backdrop-blur-lg border-t border-white/5 shadow-2xl h-[calc(100vh-48px)] overflow-y-auto animate-in fade-in slide-in-from-top duration-300">
-          <div className="px-gutter py-4 space-y-1">
-            {navLinks.map((link) => {
-              const isActive = location.pathname === link.to
-              const hasSubmenu = link.submenu && link.submenu.length > 0
+        <div className="md:hidden px-4 pb-8 h-[calc(100vh-60px)] overflow-y-auto animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="mt-4 bg-fortress-black/95 backdrop-blur-3xl border border-primary/20 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden">
+            <div className="p-2 space-y-1">
+              {navLinks.map((link) => {
+                const isActive = location.pathname === link.to
+                const hasSubmenu = link.submenu && link.submenu.length > 0
 
-              if (hasSubmenu) {
+                if (hasSubmenu) {
+                  return (
+                    <div key={link.to} className="space-y-1">
+                      <button
+                        onClick={() => setMobileSubmenuOpen(!mobileSubmenuOpen)}
+                        className={`w-full text-left px-4 py-4 rounded-xl transition-all border border-transparent ${
+                          isActive || mobileSubmenuOpen ? 'bg-primary/15 border-primary/20' : 'hover:bg-white/5'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <span className={`material-symbols-outlined text-2xl ${isActive || mobileSubmenuOpen ? 'text-primary' : 'text-white/70'}`}>{link.icon}</span>
+                            <div>
+                              <p className={`font-semibold ${isActive || mobileSubmenuOpen ? 'text-primary' : 'text-white'}`}>{link.label}</p>
+                              <p className="text-xs text-white/50 mt-0.5">{link.description}</p>
+                            </div>
+                          </div>
+                          <span className={`material-symbols-outlined transition-transform duration-200 ${mobileSubmenuOpen ? 'rotate-180 text-primary' : 'text-white/40'}`}>
+                            expand_more
+                          </span>
+                        </div>
+                      </button>
+                      
+                      {mobileSubmenuOpen && (
+                        <div className="mx-2 mb-2 p-1 space-y-1 bg-black/40 rounded-xl border border-white/5">
+                          {link.submenu.map((item, idx) => (
+                            <button key={idx} onClick={() => navigate(item.to)}
+                              className="w-full text-left px-4 py-3 rounded-lg hover:bg-primary/10 transition-colors block border-b border-white/5 last:border-none"
+                            >
+                              <p className="font-semibold text-white text-sm">{item.title}</p>
+                              <p className="text-[11px] text-white/50 mt-0.5">{item.description}</p>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )
+                }
+
                 return (
-                  <div key={link.to} className="space-y-1">
-                    <button
-                      onClick={() => setMobileSubmenuOpen(!mobileSubmenuOpen)}
-                      className={`w-full flex items-center justify-between px-3 py-3 rounded-lg text-sm font-medium transition-all border-l-2 ${
-                        isActive || mobileSubmenuOpen
-                          ? 'text-primary bg-primary/10 border-primary'
-                          : 'text-on-surface-variant border-transparent hover:bg-white/5'
-                      }`}
-                    >
-                      <div className="flex items-center gap-4">
-                        <span className="material-symbols-outlined text-xl opacity-75">{link.icon}</span>
-                        <span>{link.label}</span>
-                      </div>
-                      <span className={`material-symbols-outlined transition-transform duration-200 ${mobileSubmenuOpen ? 'rotate-180' : ''}`}>
-                        expand_more
-                      </span>
-                    </button>
-                    
-                    {/* Collapsible Mobile Submenu */}
-                    {mobileSubmenuOpen && (
-                      <div className="pl-10 pr-2 py-1 space-y-1 bg-white/[0.01] rounded-lg border border-white/5">
-                        {link.submenu.map((item, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => navigate(item.to)}
-                            className="w-full text-left py-2.5 text-sm text-on-surface-variant hover:text-white transition-colors block border-b border-white/5 last:border-none"
-                          >
-                            <p className="font-medium text-white">{item.title}</p>
-                            <p className="text-xs text-on-surface-variant/80 mt-0.5">{item.description}</p>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <Link key={link.to} to={link.to}
+                    className={`w-full flex items-center gap-4 px-4 py-4 rounded-xl transition-all border border-transparent ${
+                      isActive ? 'bg-primary/15 border-primary/20' : 'hover:bg-white/5'
+                    }`}
+                  >
+                    <span className={`material-symbols-outlined text-2xl ${isActive ? 'text-primary' : 'text-white/70'}`}>{link.icon}</span>
+                    <div>
+                      <p className={`font-semibold ${isActive ? 'text-primary' : 'text-white'}`}>{link.label}</p>
+                      <p className="text-xs text-white/50 mt-0.5">{link.description}</p>
+                    </div>
+                  </Link>
                 )
-              }
-
-              return (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className={`flex items-center gap-4 px-3 py-3 rounded-lg text-sm font-medium transition-all border-l-2 ${
-                    isActive
-                      ? 'text-primary bg-primary/10 border-primary'
-                      : 'text-on-surface-variant border-transparent hover:bg-white/5'
-                  }`}
-                >
-                  <span className="material-symbols-outlined text-xl opacity-75">{link.icon}</span>
-                  <span>{link.label}</span>
-                </Link>
-              )
-            })}
-          </div>
-          
-          <div className="mx-gutter py-4 border-t border-white/5">
-            <Link
-              to="/quote"
-              className="w-full flex items-center justify-center gap-2 bg-primary text-black py-2.5 font-bold rounded-lg text-sm"
-            >
-              <span className="material-symbols-outlined text-md">mail</span>
-              Get a Quote
-            </Link>
+              })}
+            </div>
+            
+            <div className="p-4 bg-white/[0.02] border-t border-white/5">
+              <Link to="/quote" className="w-full flex items-center justify-center gap-2 bg-primary text-black py-3.5 font-bold rounded-xl shadow-lg shadow-primary/20">
+                <span className="material-symbols-outlined">mail</span>
+                Get a Quote
+              </Link>
+            </div>
           </div>
         </div>
       )}
