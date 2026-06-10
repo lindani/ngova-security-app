@@ -4,9 +4,9 @@ import { useRevealAll } from '../hooks/useReveal'
 
 const BENTO_GALLERY_ITEMS = [
   { i: 1, url: '/images/homepage/gallery-4.jpg?w=1600&h=600&fit=crop', title: 'Security Operations', size: 'md:col-span-2' },
-  { i: 2, url: '/images/homepage/gallery-1.jpg?w=800&h=600&fit=crop', title: 'Control Center',      size: 'md:col-span-1' },
-  { i: 3, url: '/images/homepage/gallery-3.jpg?w=800&h=600&fit=crop', title: 'Team Coordination',   size: 'md:col-span-1' },
-  { i: 4, url: '/images/homepage/gallery-6.jpg?w=1600&h=600&fit=crop', title: 'Field Deployment',    size: 'md:col-span-2' },
+  { i: 2, url: '/images/homepage/gallery-1.jpg?w=800&h=600&fit=crop',  title: 'Control Center',      size: 'md:col-span-1' },
+  { i: 3, url: '/images/homepage/gallery-3.jpg?w=800&h=600&fit=crop',  title: 'Team Coordination',   size: 'md:col-span-1' },
+  { i: 4, url: '/images/homepage/gallery-5.jpg?w=1600&h=600&fit=crop', title: 'Field Deployment',    size: 'md:col-span-2' },
 ]
 
 const SCROLL_CAROUSEL_ITEMS = [
@@ -134,7 +134,7 @@ export default function HomePage() {
     <main ref={containerRef} className="overflow-x-hidden bg-background text-on-background">
 
       {/* ─── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative flex items-end min-h-[100svh] pb-12 sm:pb-20 overflow-hidden">
+      <section className="relative min-h-[100svh] flex flex-col overflow-hidden">
 
         {/* Background video / poster */}
         <div className="absolute inset-0 z-0">
@@ -145,25 +145,24 @@ export default function HomePage() {
           >
             <source src="/videos/security_heroes.mp4" type="video/mp4" />
           </video>
-          {/* gradient: dark only at bottom for text legibility, transparent above */}
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
         </div>
 
         {/* Content */}
-        <div className="relative z-10 w-full max-w-container-max mx-auto px-gutter">
+        <div className="relative z-10 flex flex-col flex-1 w-full max-w-container-max mx-auto px-gutter pt-28 sm:pt-0 pb-16 sm:pb-24 justify-center sm:justify-end">
           <div className="max-w-3xl reveal-hidden">
-            <div className="flex items-center gap-2.5 mb-4">
+            <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="font-label-caps text-xs text-primary uppercase tracking-widest font-semibold">
                 Premium Protection
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display-lg text-white leading-[1.08] tracking-tight mb-5">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-display-lg text-white leading-[1.08] tracking-tight mb-3 sm:mb-5">
               Security Done Right.
             </h1>
 
-            <p className="text-sm sm:text-base md:text-lg text-on-surface-variant leading-relaxed mb-8 max-w-xl">
+            <p className="text-sm sm:text-base md:text-lg text-on-surface-variant leading-relaxed mb-6 sm:mb-8 max-w-xl">
               Impenetrable asset and infrastructure protection. Elite tactical personnel combined
               with intelligent monitoring technology — securing what matters most.
             </p>
@@ -203,7 +202,7 @@ export default function HomePage() {
         </div>
 
         {/* Scroll cue */}
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20">
           <div className="w-5 h-1 bg-primary/60 rounded-full" />
         </div>
       </section>

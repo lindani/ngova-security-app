@@ -6,10 +6,8 @@ export default function ServicesPage() {
   const containerRef = useRef(null)
   const location = useLocation()
 
-  // Initialize unified scroll reveal hook
   useRevealAll(containerRef, '.reveal-on-scroll')
 
-  // Smooth-scroll targeting logic for React Router hashes
   useEffect(() => {
     if (location.hash) {
       const element = document.getElementById(location.hash.slice(1))
@@ -23,21 +21,22 @@ export default function ServicesPage() {
 
   return (
     <div ref={containerRef} className="bg-background text-on-background font-body-md overflow-x-hidden pt-16 sm:pt-24 min-h-screen">
-      
-      {/* Hero Section */}
-      <section className="relative min-h-[100vh] sm:min-h-[650px] sm:h-[650px] flex items-end pb-12 sm:pb-20 px-gutter max-w-container-max mx-auto overflow-hidden rounded-xl mt-0 sm:mt-8">
+
+      {/* ─── Hero ─────────────────────────────────────────────────────────── */}
+      <section className="relative min-h-[100svh] sm:min-h-[650px] sm:h-[650px] flex flex-col overflow-hidden rounded-none sm:rounded-xl mx-0 sm:mx-4 lg:mx-auto sm:max-w-container-max sm:mt-8">
         <div className="absolute inset-0 z-0">
-          <img 
-            alt="Elite Tactical Protection Operations" 
-            className="w-full h-full object-cover opacity-40 sm:opacity-60 saturate-50" 
+          <img
+            alt="Elite Tactical Protection Operations"
+            className="w-full h-full object-cover opacity-40 sm:opacity-60 saturate-50"
             src="https://images.unsplash.com/photo-1557821552-17105176677c?w=1600&h=900&fit=crop"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
         </div>
-        
-        <div className="relative z-10 max-w-3xl w-full">
+
+        {/* Content: vertically centred on mobile, bottom-anchored on sm+ */}
+        <div className="relative z-10 flex flex-col flex-1 justify-center sm:justify-end px-gutter pt-28 sm:pt-0 pb-10 sm:pb-20 max-w-3xl w-full">
           <div className="flex items-center space-x-2 mb-3 sm:mb-4 reveal-on-scroll" style={{ transitionDelay: '0.1s' }}>
-            <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+            <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
             <span className="font-label-caps text-xs sm:text-label-caps text-primary tracking-widest uppercase">Elite Protection Services</span>
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-display-lg font-display-lg mb-4 sm:mb-6 leading-tight text-white reveal-on-scroll" style={{ transitionDelay: '0.2s' }}>
@@ -57,7 +56,7 @@ export default function ServicesPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8">
-          
+
           {/* Service 1: Physical Guarding */}
           <div id="physical-guarding" className="md:col-span-8 group relative overflow-hidden rounded-xl border border-border-subtle card-hover reveal-on-scroll" style={{ transitionDelay: '0.2s' }}>
             <img alt="Physical Guarding Team" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 card-img brightness-[0.6] sm:brightness-[0.7] saturate-50" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=800&fit=crop"/>
@@ -78,7 +77,7 @@ export default function ServicesPage() {
               </div>
             </div>
           </div>
-          
+
           {/* Service 2: Risk Assessment */}
           <div id="risk-assessment" className="md:col-span-4 glass-card p-6 sm:p-10 rounded-xl flex flex-col justify-center border border-border-subtle hover:border-primary/50 transition-colors reveal-on-scroll" style={{ transitionDelay: '0.3s' }}>
             <div className="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center mb-6 sm:mb-8 border border-white/5">
@@ -89,7 +88,7 @@ export default function ServicesPage() {
               <p className="text-on-surface-variant text-sm sm:text-body-md">Advanced threat modeling and comprehensive site vulnerability calculations to minimize active infrastructure gaps.</p>
             </div>
           </div>
-          
+
           {/* Service 3: Access Control */}
           <div id="access-control" className="md:col-span-4 group relative overflow-hidden rounded-xl border border-border-subtle card-hover reveal-on-scroll" style={{ transitionDelay: '0.2s' }}>
             <img alt="Biometric access control system interface" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 card-img brightness-50 sm:brightness-75" src="https://images.unsplash.com/photo-1558002038-1055907df827?w=800"/>
@@ -106,7 +105,7 @@ export default function ServicesPage() {
               <Link to="/services" className="w-full py-3 border border-border-subtle hover:bg-white/5 text-white transition-colors font-label-caps text-xs tracking-widest uppercase text-center block rounded-sm">View Technologies</Link>
             </div>
           </div>
-          
+
           {/* Service 4: Monitoring Center */}
           <div id="monitoring" className="md:col-span-8 group relative overflow-hidden rounded-xl border border-border-subtle card-hover reveal-on-scroll" style={{ transitionDelay: '0.3s' }}>
             <img alt="Monitoring Center" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 card-img brightness-75 saturate-[0.8]" src="https://images.unsplash.com/photo-1557821552-17105176677c?w=1200&h=800&fit=crop"/>
@@ -119,7 +118,7 @@ export default function ServicesPage() {
               <p className="text-on-surface-variant max-w-md text-sm sm:text-body-md">Continuous surveillance arrays backed by real-time dispatch operations to intercept anomalies immediately.</p>
             </div>
           </div>
-          
+
           {/* Service 5: Tactical Fleet */}
           <div id="tactical-deployment" className="md:col-span-12 group relative overflow-hidden rounded-xl border border-border-subtle card-hover reveal-on-scroll" style={{ transitionDelay: '0.2s' }}>
             <img alt="Security Fleet and Personnel" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 card-img brightness-[0.5] sm:brightness-[0.6] saturate-50" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&h=900&fit=crop"/>
@@ -156,7 +155,7 @@ export default function ServicesPage() {
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
         <div className="max-w-container-max mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-16 md:gap-24 items-center">
-            
+
             <div className="reveal-on-scroll">
               <h2 className="text-2xl sm:text-3xl md:text-display-lg font-display-lg mb-8 sm:mb-12 text-white">The Fortress Framework</h2>
               <ul className="space-y-6 sm:space-y-10">
@@ -183,7 +182,7 @@ export default function ServicesPage() {
                 </li>
               </ul>
             </div>
-            
+
             {/* Visual Dashboard Card */}
             <div className="glass-panel p-6 sm:p-10 rounded-2xl relative reveal-on-scroll border border-white/5 bg-white/[0.02]" style={{ transitionDelay: '0.3s' }}>
               <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>

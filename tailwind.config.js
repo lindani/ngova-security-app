@@ -8,15 +8,25 @@ export default {
   theme: {
     extend: {
       colors: {
+        // ─── UPDATED PRIMARY THEME (Replaced Pink with Red) ───
+        "primary": "#d11f26",           // The core brand red
+        "on-primary": "#ffffff",        // White text for high contrast on red buttons
+        "primary-container": "#93000a", // Darker red for active states/containers
+        "primary-fixed": "#ffdad6",     // Soft red for light backgrounds
+        "on-primary-fixed": "#410003",
+        "on-primary-fixed-variant": "#930010",
+        "primary-fixed-dim": "#ffb3ac", 
+        "on-primary-container": "#ffe8e5",
+        "surface-tint": "#d11f26",
+        
+        // ─── REMAINING COLORS (Unchanged) ───
         "secondary-fixed-dim": "#6bd8cb",
         "fortress-black": "#0B0F17",
         "surface-dim": "#0c1322",
         "secondary-container": "#29a195",
         "on-secondary": "#003732",
-        "primary-fixed-dim": "#ffb3ac",
         "on-error-container": "#ffdad6",
         "on-secondary-container": "#00302b",
-        "on-primary": "#680008",
         "border-subtle": "rgba(255, 255, 255, 0.08)",
         "surface-container-highest": "#2e3545",
         "security-emerald": "#10B981",
@@ -26,8 +36,6 @@ export default {
         "tertiary": "#9ad1cb",
         "surface-container-high": "#232a3a",
         "outline-variant": "#5c403d",
-        "on-primary-fixed": "#410003",
-        "primary-fixed": "#ffdad6",
         "inverse-on-surface": "#293040",
         "secondary-fixed": "#89f5e7",
         "background": "#0c1322",
@@ -36,7 +44,6 @@ export default {
         "on-surface-variant": "#e5bdb9",
         "on-surface": "#dce2f7",
         "inverse-primary": "#be0a1b",
-        "surface-tint": "#ffb3ac",
         "surface-container-lowest": "#070e1d",
         "surface-container-low": "#141b2b",
         "error-container": "#93000a",
@@ -47,16 +54,12 @@ export default {
         "on-tertiary-fixed": "#00201e",
         "error": "#ffb4ab",
         "outline": "#ac8885",
-        "primary": "#ffb3ac",
-        "primary-container": "#d11f26",
         "on-background": "#dce2f7",
         "tertiary-fixed-dim": "#9ad1cb",
         "on-secondary-fixed-variant": "#005049",
-        "on-primary-container": "#ffe8e5",
         "tertiary-fixed": "#b5ede7",
         "surface": "#0c1322",
         "on-tertiary-fixed-variant": "#144f4b",
-        "on-primary-fixed-variant": "#930010",
         "tertiary-container": "#3e746f",
         "on-tertiary-container": "#bff8f1",
       },

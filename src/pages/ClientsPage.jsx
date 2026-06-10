@@ -2,7 +2,6 @@ import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useRevealAll } from '../hooks/useReveal'
 
-// Setup to read locally from your project's public directory (e.g., public/logos/*)
 const clients = [
   {
     id: 'asla-civils',
@@ -85,73 +84,61 @@ export default function ClientsPage() {
   const [isAutoScrolling, setIsAutoScrolling] = useState(true)
   const autoScrollIntervalRef = useRef(null)
   const userInteractionTimeoutRef = useRef(null)
-  
+
   useRevealAll(containerRef, '.reveal-on-scroll')
 
-  // Auto-scroll loop engine
   useEffect(() => {
     if (!isAutoScrolling || !carouselRef.current) return
-
     autoScrollIntervalRef.current = setInterval(() => {
       const carousel = carouselRef.current
       if (!carousel) return
-      
-      const scrollAmount = 320
       const maxScroll = carousel.scrollWidth - carousel.clientWidth
-      let newScroll = carousel.scrollLeft + scrollAmount
-      
-      if (newScroll >= maxScroll - 5) {
-        newScroll = 0
-      }
-      
+      let newScroll = carousel.scrollLeft + 320
+      if (newScroll >= maxScroll - 5) newScroll = 0
       carousel.scrollTo({ left: newScroll, behavior: 'smooth' })
     }, 4500)
-
     return () => clearInterval(autoScrollIntervalRef.current)
   }, [isAutoScrolling])
 
-  // Clear interaction timers on unmount
   useEffect(() => {
     return () => {
-      if (userInteractionTimeoutRef.current) {
-        clearTimeout(userInteractionTimeoutRef.current)
-      }
+      if (userInteractionTimeoutRef.current) clearTimeout(userInteractionTimeoutRef.current)
     }
   }, [])
 
-  // Handles manual control arrows or swipes, briefly pausing autoscroll
   const scrollCarousel = (direction) => {
     const carousel = carouselRef.current
     if (!carousel) return
-    
     setIsAutoScrolling(false)
     if (userInteractionTimeoutRef.current) clearTimeout(userInteractionTimeoutRef.current)
-
-    const scrollAmount = 320
-    const newScroll = direction === 'left' 
-      ? Math.max(0, carousel.scrollLeft - scrollAmount)
-      : Math.min(carousel.scrollWidth - carousel.clientWidth, carousel.scrollLeft + scrollAmount)
-      
+    const newScroll = direction === 'left'
+      ? Math.max(0, carousel.scrollLeft - 320)
+      : Math.min(carousel.scrollWidth - carousel.clientWidth, carousel.scrollLeft + 320)
     carousel.scrollTo({ left: newScroll, behavior: 'smooth' })
-
-    // Resume autoscrolling after 8 seconds of inactivity
-    userInteractionTimeoutRef.current = setTimeout(() => {
-      setIsAutoScrolling(true)
-    }, 8000)
+    userInteractionTimeoutRef.current = setTimeout(() => setIsAutoScrolling(true), 8000)
   }
 
   const carouselClients = clients.filter(c => c.carousel)
 
   return (
     <div ref={containerRef} className="pt-16 sm:pt-24 overflow-x-hidden text-on-background bg-background selection:bg-primary selection:text-on-primary">
-      {/* Hero Section */}
-      <section className="relative min-h-[100vh] sm:min-h-[650px] sm:h-[650px] flex items-end pb-12 sm:pb-20 px-gutter max-w-container-max mx-auto overflow-hidden rounded-xl mt-0 sm:mt-8">
+
+      {/* ─── Hero ─────────────────────────────────────────────────────────── */}
+      <section className="relative min-h-[100svh] sm:min-h-[650px] sm:h-[650px] flex flex-col overflow-hidden rounded-none sm:rounded-xl mx-0 sm:mx-4 lg:mx-auto sm:max-w-container-max sm:mt-8">
         <div className="absolute inset-0 z-0">
-          <img alt="Professional Security Fleet and Personnel" className="w-full h-full object-cover opacity-40 sm:opacity-60 saturate-50" src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=900&fit=crop"/>
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent"></div>
+          <img
+            alt="Professional Security Fleet and Personnel"
+            className="w-full h-full object-cover opacity-40 sm:opacity-60 saturate-50"
+            src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=900&fit=crop"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
         </div>
-        <div className="relative z-10 max-w-3xl w-full">
-          <span className="font-label-caps text-xs sm:text-label-caps text-primary tracking-widest uppercase mb-3 sm:mb-4 block">Ngova Security</span>
+
+        {/* Content: centred vertically on mobile, bottom-anchored on sm+ */}
+        <div className="relative z-10 flex flex-col flex-1 justify-center sm:justify-end px-gutter pt-28 sm:pt-0 pb-10 sm:pb-20 max-w-3xl w-full">
+          <span className="font-label-caps text-xs sm:text-label-caps text-primary tracking-widest uppercase mb-3 sm:mb-4 block">
+            Ngova Security
+          </span>
           <h1 className="text-3xl sm:text-5xl md:text-display-lg font-display-lg mb-4 sm:mb-6 leading-tight text-white">
             Securing the Icons of <span className="text-primary text-glow">African Industry.</span>
           </h1>
@@ -167,7 +154,7 @@ export default function ClientsPage() {
           <h2 className="text-2xl sm:text-headline-md font-headline-md mb-3 sm:mb-4 text-white">Strategic Partnerships</h2>
           <div className="w-16 sm:w-24 h-1 bg-primary"></div>
         </div>
-        
+
         {/* Featured Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 mb-16 sm:mb-20">
           {clients.slice(0, 2).map((client) => {
@@ -177,7 +164,6 @@ export default function ClientsPage() {
                   <div className="h-56 sm:h-72 relative overflow-hidden flex items-center justify-center bg-neutral-900/40">
                     <img alt={client.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-45" src={client.image}/>
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent"></div>
-                    
                     <div className="absolute top-4 left-4 sm:top-6 sm:left-6 bg-white w-36 h-16 sm:w-44 sm:h-20 p-3 sm:p-4 rounded-xl z-10 flex items-center justify-center shadow-2xl ring-1 ring-white/20">
                       <img src={client.logo} alt={client.name} className="max-w-full max-h-full object-contain drop-shadow-sm" />
                     </div>
@@ -201,16 +187,13 @@ export default function ClientsPage() {
                 <div key={client.id} className={`${client.featured_size} glass-card border border-white/5 bg-white/[0.02] rounded-xl overflow-hidden relative group reveal-on-scroll min-h-[420px] sm:min-h-[auto]`}>
                   <img alt={client.name} className="absolute inset-0 w-full h-full object-cover opacity-25 grayscale group-hover:grayscale-0 transition-all duration-700" src={client.image}/>
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/90 md:via-background/70 to-transparent"></div>
-                  
                   <div className="absolute top-4 left-4 sm:top-6 sm:left-6 bg-white w-36 h-16 sm:w-44 sm:h-20 p-3 sm:p-4 rounded-xl z-10 flex items-center justify-center shadow-2xl ring-1 ring-white/20">
                     <img src={client.logo} alt={client.name} className="max-w-full max-h-full object-contain drop-shadow-sm" />
                   </div>
-
                   <div className="relative p-5 sm:p-8 h-full flex flex-col justify-end z-10 pt-32">
                     <span className="font-label-caps text-[10px] sm:text-xs text-secondary-fixed-dim mb-1 sm:mb-2 block tracking-wider">{client.category}</span>
                     <h3 className="text-xl sm:text-headline-md font-headline-md text-white mb-2">{client.short_description}</h3>
                     <p className="text-sm sm:text-body-md font-body-md text-on-surface-variant mb-5 sm:mb-6">{client.description}</p>
-                    
                     <div className="flex items-center gap-3 py-4 border-t border-white/10">
                       <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
                         <span className="material-symbols-outlined text-primary text-xl">domain</span>
@@ -232,41 +215,29 @@ export default function ClientsPage() {
           })}
         </div>
 
-        {/* Carousel Section - Extended Enterprise Roster */}
+        {/* Carousel Section */}
         {carouselClients.length > 0 && (
           <div className="relative group">
             <div className="mb-6 sm:mb-8 reveal-on-scroll">
               <h3 className="text-base sm:text-body-lg font-body-lg text-on-surface-variant tracking-wide">Enterprise Roster</h3>
             </div>
-            
+
             <div
               ref={carouselRef}
               onTouchStart={() => setIsAutoScrolling(false)}
-              className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory hide-scrollbar animate-fade-in"
+              className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory hide-scrollbar"
             >
               {carouselClients.map((client) => (
-                <div
-                  key={client.id}
-                  className="flex-shrink-0 w-[290px] sm:w-80 lg:w-92 snap-start reveal-on-scroll"
-                >
+                <div key={client.id} className="flex-shrink-0 w-[290px] sm:w-80 lg:w-92 snap-start reveal-on-scroll">
                   <a href={client.website} target="_blank" rel="noopener noreferrer" className="group/card block">
                     <div className="relative h-[400px] sm:h-[440px] rounded-xl overflow-hidden glass-card border border-white/5 bg-neutral-900/40 cursor-pointer flex flex-col justify-between p-6">
-                      
                       <div className="h-20 sm:h-24 w-full flex items-center justify-center bg-white rounded-xl p-4 z-10 transition-all duration-300 group-hover/card:shadow-[0_0_24px_rgba(255,255,255,0.15)] group-hover/card:scale-[1.02] shadow-md">
                         {client.logo && (
-                          <img 
-                            src={client.logo} 
-                            alt={`${client.name} logo`} 
-                            className="max-w-full max-h-full object-contain group-hover/card:scale-105 transition-transform duration-300" 
-                          />
+                          <img src={client.logo} alt={`${client.name} logo`} className="max-w-full max-h-full object-contain group-hover/card:scale-105 transition-transform duration-300" />
                         )}
                       </div>
-
-                      {/* Textures and Backdrops */}
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neutral-950/70 to-background z-0"></div>
                       <img src={client.image} alt="" className="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-overlay pointer-events-none group-hover/card:scale-105 transition-transform duration-700" />
-                      
-                      {/* Client Copy Details */}
                       <div className="z-10 pt-6">
                         <span className="font-label-caps text-[9px] sm:text-[10px] text-secondary-fixed-dim mb-1 block tracking-widest">{client.category}</span>
                         <h4 className="text-lg sm:text-xl font-bold text-white mb-2">{client.name}</h4>
@@ -281,22 +252,12 @@ export default function ClientsPage() {
               ))}
             </div>
 
-            {/* Carousel Arrow Controls */}
-            <button
-              onClick={() => scrollCarousel('left')}
-              className="hidden md:flex absolute -left-6 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              aria-label="Scroll left"
-            >
+            <button onClick={() => scrollCarousel('left')} className="hidden md:flex absolute -left-6 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-label="Scroll left">
               <div className="w-10 h-10 rounded-full bg-neutral-900 border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-colors group/btn">
                 <span className="material-symbols-outlined text-white text-lg group-hover/btn:text-neutral-950">chevron_left</span>
               </div>
             </button>
-
-            <button
-              onClick={() => scrollCarousel('right')}
-              className="hidden md:flex absolute -right-6 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              aria-label="Scroll right"
-            >
+            <button onClick={() => scrollCarousel('right')} className="hidden md:flex absolute -right-6 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-label="Scroll right">
               <div className="w-10 h-10 rounded-full bg-neutral-900 border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-colors group/btn">
                 <span className="material-symbols-outlined text-white text-lg group-hover/btn:text-neutral-950">chevron_right</span>
               </div>
