@@ -141,8 +141,8 @@ export default function Navbar() {
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ease-in-out py-2 ${
         scrolled || mobileOpen || searchOpen
-          ? 'bg-fortress-black/98 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.8)] border-b border-primary/25'
-          : 'bg-fortress-black/5 backdrop-blur-sm border-b border-white/5'
+          ? 'bg-fortress-black/98 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.8)]'
+          : 'bg-fortress-black/5 backdrop-blur-sm'
       }`}
     >
       {/* Desktop Navbar */}
@@ -257,20 +257,20 @@ export default function Navbar() {
 
       {/* Mobile Navbar Header */}
       <nav className="md:hidden flex justify-between items-center px-gutter w-full max-w-container-max mx-auto">
-        <button className="text-white h-9 w-9 hover:bg-white/5 rounded-lg flex items-center justify-center" onClick={toggleMobileMenu}>
+        <button className="text-white h-9 w-9 -ml-2 rounded-lg flex items-center justify-center" onClick={toggleMobileMenu}>
           <span className="material-symbols-outlined text-[28px]">{mobileOpen ? 'close' : 'menu'}</span>
         </button>
         <Link to="/" className="flex-shrink-0 py-1 h-11 flex items-center">
           <img alt="Ngova Security Logo" className="h-8 w-auto object-contain" src={LOGO_URL} />
         </Link>
-        <button onClick={toggleSearchLayer} className="text-white h-9 w-9 hover:bg-white/5 rounded-lg flex items-center justify-center">
+        <button onClick={toggleSearchLayer} className="text-white h-9 w-9 -mr-2 rounded-lg flex items-center justify-center">
           <span className="material-symbols-outlined text-[28px]">{searchOpen ? 'close' : 'search'}</span>
         </button>
       </nav>
 
       {/* Mobile Search Overlay Input Drawer */}
       {searchOpen && (
-        <div className="md:hidden absolute top-[60px] left-0 w-full bg-fortress-black border-b border-primary/20 p-4 animate-in slide-in-from-top-2 duration-200 z-50">
+        <div className="md:hidden absolute top-[60px] left-0 w-full bg-fortress-black/98 px-gutter py-4 z-50">
           <div className="relative">
             <input
               type="text"
@@ -308,74 +308,72 @@ export default function Navbar() {
 
       {/* Mobile Dropdown Menu Drawer */}
       {mobileOpen && (
-        <div className="md:hidden px-4 pb-8 h-[calc(100vh-60px)] overflow-y-auto animate-in fade-in slide-in-from-top-4 duration-300">
-          <div className="mt-4 bg-fortress-black/95 backdrop-blur-3xl border border-primary/20 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden">
-            <div className="p-2 space-y-1">
-              {navLinks.map((link) => {
-                const isActive = location.pathname === link.to
-                const hasSubmenu = link.submenu && link.submenu.length > 0
+        <div className="md:hidden px-gutter pb-8 h-[calc(100vh-60px)] overflow-y-auto animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="mt-4 space-y-1">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.to
+              const hasSubmenu = link.submenu && link.submenu.length > 0
 
-                if (hasSubmenu) {
-                  return (
-                    <div key={link.to} className="space-y-1">
-                      <button
-                        onClick={() => setMobileSubmenuOpen(!mobileSubmenuOpen)}
-                        className={`w-full text-left px-4 py-4 rounded-xl transition-all border border-transparent ${
-                          isActive || mobileSubmenuOpen ? 'bg-primary/15 border-primary/20' : 'hover:bg-white/5'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <span className={`material-symbols-outlined text-2xl ${isActive || mobileSubmenuOpen ? 'text-primary' : 'text-white/70'}`}>{link.icon}</span>
-                            <div>
-                              <p className={`font-semibold ${isActive || mobileSubmenuOpen ? 'text-primary' : 'text-white'}`}>{link.label}</p>
-                              <p className="text-xs text-white/50 mt-0.5">{link.description}</p>
-                            </div>
-                          </div>
-                          <span className={`material-symbols-outlined transition-transform duration-200 ${mobileSubmenuOpen ? 'rotate-180 text-primary' : 'text-white/40'}`}>
-                            expand_more
-                          </span>
-                        </div>
-                      </button>
-                      
-                      {mobileSubmenuOpen && (
-                        <div className="mx-2 mb-2 p-1 space-y-1 bg-black/40 rounded-xl border border-white/5">
-                          {link.submenu.map((item, idx) => (
-                            <button key={idx} onClick={() => navigate(item.to)}
-                              className="w-full text-left px-4 py-3 rounded-lg hover:bg-primary/10 transition-colors block border-b border-white/5 last:border-none"
-                            >
-                              <p className="font-semibold text-white text-sm">{item.title}</p>
-                              <p className="text-[11px] text-white/50 mt-0.5">{item.description}</p>
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )
-                }
-
+              if (hasSubmenu) {
                 return (
-                  <Link key={link.to} to={link.to} state={{ mode: link.mode || 'quote' }}
-                    className={`w-full flex items-center gap-4 px-4 py-4 rounded-xl transition-all border border-transparent ${
-                      isActive ? 'bg-primary/15 border-primary/20' : 'hover:bg-white/5'
-                    }`}
-                  >
-                    <span className={`material-symbols-outlined text-2xl ${isActive ? 'text-primary' : 'text-white/70'}`}>{link.icon}</span>
-                    <div>
-                      <p className={`font-semibold ${isActive ? 'text-primary' : 'text-white'}`}>{link.label}</p>
-                      <p className="text-xs text-white/50 mt-0.5">{link.description}</p>
-                    </div>
-                  </Link>
+                  <div key={link.to} className="space-y-1">
+                    <button
+                      onClick={() => setMobileSubmenuOpen(!mobileSubmenuOpen)}
+                      className={`w-full text-left py-3.5 transition-all border-b border-white/5 ${
+                        isActive || mobileSubmenuOpen ? 'text-primary' : 'text-white'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <span className="material-symbols-outlined text-2xl opacity-80">{link.icon}</span>
+                          <div>
+                            <p className="font-semibold">{link.label}</p>
+                            <p className="text-xs text-white/50 mt-0.5">{link.description}</p>
+                          </div>
+                        </div>
+                        <span className={`material-symbols-outlined transition-transform duration-200 ${mobileSubmenuOpen ? 'rotate-180 text-primary' : 'text-white/40'}`}>
+                          expand_more
+                        </span>
+                      </div>
+                    </button>
+                    
+                    {mobileSubmenuOpen && (
+                      <div className="my-1 pl-10 space-y-1 border-l border-white/10">
+                        {link.submenu.map((item, idx) => (
+                          <button key={idx} onClick={() => navigate(item.to)}
+                            className="w-full text-left py-3 transition-colors block border-b border-white/5 last:border-none"
+                          >
+                            <p className="font-semibold text-white text-sm">{item.title}</p>
+                            <p className="text-[11px] text-white/50 mt-0.5">{item.description}</p>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 )
-              })}
-            </div>
-            
-            <div className="p-4 bg-white/[0.02] border-t border-white/5">
-              <Link to="/quote" state={{ mode: 'quote' }} className="w-full flex items-center justify-center gap-2 bg-primary text-black py-3.5 font-bold rounded-xl shadow-lg shadow-primary/20">
-                <span className="material-symbols-outlined">request_quote</span>
-                Get a Quote
-              </Link>
-            </div>
+              }
+
+              return (
+                <Link key={link.to} to={link.to} state={{ mode: link.mode || 'quote' }}
+                  className={`w-full flex items-center gap-4 py-3.5 transition-all border-b border-white/5 ${
+                    isActive ? 'text-primary' : 'text-white'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-2xl opacity-80">{link.icon}</span>
+                  <div>
+                    <p className="font-semibold">{link.label}</p>
+                    <p className="text-xs text-white/50 mt-0.5">{link.description}</p>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+          
+          <div className="mt-6">
+            <Link to="/quote" state={{ mode: 'quote' }} className="w-full flex items-center justify-center gap-2 bg-primary text-black py-4 font-bold rounded-xl shadow-lg shadow-primary/20">
+              <span className="material-symbols-outlined">request_quote</span>
+              Get a Quote
+            </Link>
           </div>
         </div>
       )}
