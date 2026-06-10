@@ -4,9 +4,9 @@ import { useRevealAll } from '../hooks/useReveal'
 
 const BENTO_GALLERY_ITEMS = [
   { i: 1, url: '/images/homepage/gallery-4.jpg?w=1600&h=600&fit=crop', title: 'Security Operations', size: 'md:col-span-2' },
-  { i: 2, url: '/images/homepage/gallery-1.jpg?w=800&h=600&fit=crop',  title: 'Control Center',      size: 'md:col-span-1' },
-  { i: 3, url: '/images/homepage/gallery-3.jpg?w=800&h=600&fit=crop',  title: 'Team Coordination',   size: 'md:col-span-1' },
-  { i: 4, url: '/images/homepage/gallery-5.jpg?w=1600&h=600&fit=crop', title: 'Field Deployment',    size: 'md:col-span-2' },
+  { i: 2, url: '/images/homepage/gallery-1.jpg?w=800&h=600&fit=crop', title: 'Control Center',      size: 'md:col-span-1' },
+  { i: 3, url: '/images/homepage/gallery-3.jpg?w=800&h=600&fit=crop', title: 'Team Coordination',   size: 'md:col-span-1' },
+  { i: 4, url: '/images/homepage/gallery-6.jpg?w=1600&h=600&fit=crop', title: 'Field Deployment',    size: 'md:col-span-2' },
 ]
 
 const SCROLL_CAROUSEL_ITEMS = [
