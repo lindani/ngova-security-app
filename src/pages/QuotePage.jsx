@@ -71,9 +71,12 @@ export default function QuotePage() {
         {/* Left Sidebar: Progress & Context */}
         <aside className="lg:col-span-4 space-y-6 lg:space-y-8 lg:sticky lg:top-32 h-fit">
           <div className="text-center lg:text-left">
-            <span className="font-label-caps text-xs text-primary mb-1 lg:mb-2 block tracking-widest">
-              {formMode === 'quote' ? 'CONSULTATION PORTAL' : 'COMMUNICATIONS CENTER'}
-            </span>
+            <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="font-label-caps text-xs text-primary uppercase tracking-widest font-semibold">
+                {formMode === 'quote' ? 'Consultation Portal' : 'Communications Center'}
+              </span>
+            </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl mb-3 lg:mb-4 leading-tight font-bold">
               {formMode === 'quote' ? (
                 <>

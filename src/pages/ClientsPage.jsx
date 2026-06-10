@@ -136,10 +136,13 @@ export default function ClientsPage() {
 
         {/* Content: centred vertically on mobile, bottom-anchored on sm+ */}
         <div className="relative z-10 flex flex-col flex-1 justify-center sm:justify-end px-gutter pt-28 sm:pt-0 pb-10 sm:pb-20 max-w-3xl w-full">
-          <span className="font-label-caps text-xs sm:text-label-caps text-primary tracking-widest uppercase mb-3 sm:mb-4 block">
-            Ngova Security
-          </span>
-          <h1 className="text-3xl sm:text-5xl md:text-display-lg font-display-lg mb-4 sm:mb-6 leading-tight text-white">
+          <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="font-label-caps text-xs text-primary uppercase tracking-widest font-semibold">
+              Ngova Security Services
+            </span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-display-lg text-white leading-[1.08] tracking-tight mb-3 sm:mb-5">
             Securing the Icons of <span className="text-primary text-glow">African Industry.</span>
           </h1>
           <p className="text-sm sm:text-body-lg font-body-lg text-on-surface-variant max-w-2xl">

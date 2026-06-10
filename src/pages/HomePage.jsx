@@ -154,9 +154,9 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 flex flex-col flex-1 w-full max-w-container-max mx-auto px-gutter pt-28 sm:pt-0 pb-16 sm:pb-24 justify-center sm:justify-end">
-          <div className="max-w-3xl reveal-hidden">
+        {/* Content - Fixed with standard max-width, centering, and gutter padding to sit inline */}
+        <div className="relative z-10 flex flex-col flex-1 justify-end w-full max-w-container-max mx-auto px-gutter pt-40 sm:pt-0 pb-12 sm:pb-16 reveal-hidden">
+          <div className="max-w-3xl">
             <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="font-label-caps text-xs text-primary uppercase tracking-widest font-semibold">
@@ -169,8 +169,8 @@ export default function HomePage() {
             </h1>
 
             <p className="text-sm sm:text-base md:text-lg text-on-surface-variant leading-relaxed mb-6 sm:mb-8 max-w-xl">
-              Impenetrable asset and infrastructure protection. Elite tactical personnel combined
-              with intelligent monitoring technology — securing what matters most.
+              Elite tactical personnel and intelligent monitoring. 
+              Impenetrable protection for your critical assets and infrastructure - securing what matters most.
             </p>
 
             <div className="flex flex-col xs:flex-row gap-3 sm:gap-4">

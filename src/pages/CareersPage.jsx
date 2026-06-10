@@ -73,8 +73,13 @@ export default function CareersPage() {
       <section className="relative py-12 sm:py-section-gap px-gutter max-w-container-max mx-auto overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-center">
           <div className="z-10 reveal-hidden">
-            <span className="font-label-caps text-xs sm:text-label-caps text-primary mb-3 block tracking-widest uppercase">CAREERS AT NGOVA</span>
-            <h1 className="font-display-lg text-3xl sm:text-5xl lg:text-display-lg mb-4 sm:mb-6 leading-tight text-white">
+            <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="font-label-caps text-xs text-primary uppercase tracking-widest font-semibold">
+                Careers at Ngova Security Services
+              </span>
+            </div>
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-display-lg text-white leading-[1.08] tracking-tight mb-3 sm:mb-5">
               Join the <span className="text-primary text-glow">Elite Force.</span>
             </h1>
             <p className="font-body-lg text-sm sm:text-body-lg text-on-surface-variant mb-6 sm:mb-8 max-w-xl leading-relaxed">
