@@ -4,7 +4,6 @@ import { useRevealAll } from '../hooks/useReveal'
 
 export default function ServicesPage() {
   const containerRef = useRef(null)
-  const blobRef = useRef(null)
   const location = useLocation()
 
   // Initialize unified scroll reveal hook
@@ -15,7 +14,6 @@ export default function ServicesPage() {
     if (location.hash) {
       const element = document.getElementById(location.hash.slice(1))
       if (element) {
-        // Simple delay buffer ensures layout calculations finish before jumping
         setTimeout(() => {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }, 100)
@@ -23,53 +21,44 @@ export default function ServicesPage() {
     }
   }, [location])
 
-  // Mouse-movement parallax effect for header background element
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      const parallaxBg = blobRef.current
-      if (parallaxBg) {
-        const x = (window.innerWidth - e.pageX * 2) / 100
-        const y = (window.innerHeight - e.pageY * 2) / 100
-        parallaxBg.style.transform = `translateX(${x}px) translateY(${y}px)`
-      }
-    }
-    document.addEventListener('mousemove', handleMouseMove)
-    return () => document.removeEventListener('mousemove', handleMouseMove)
-  }, [])
-
   return (
     <div ref={containerRef} className="bg-background text-on-background font-body-md overflow-x-hidden pt-16 sm:pt-24 min-h-screen">
       
       {/* Hero Section */}
-      <header className="relative pt-12 pb-16 sm:pt-20 sm:pb-24 px-gutter max-w-container-max mx-auto overflow-hidden">
-        <div 
-          ref={blobRef} 
-          className="parallax-bg absolute top-0 right-0 -z-10 w-full sm:w-2/3 h-2/3 bg-[radial-gradient(circle_at_50%_0%,rgba(209,31,38,0.12),transparent_60%)]" 
-        ></div>
-        <div className="max-w-3xl">
-          <div className="flex items-center space-x-2 mb-4 sm:mb-8 reveal-on-scroll" style={{ transitionDelay: '0.1s' }}>
+      <section className="relative min-h-[100vh] sm:min-h-[650px] sm:h-[650px] flex items-end pb-12 sm:pb-20 px-gutter max-w-container-max mx-auto overflow-hidden rounded-xl mt-0 sm:mt-8">
+        <div className="absolute inset-0 z-0">
+          <img 
+            alt="Elite Tactical Protection Operations" 
+            className="w-full h-full object-cover opacity-40 sm:opacity-60 saturate-50" 
+            src="https://images.unsplash.com/photo-1557821552-17105176677c?w=1600&h=900&fit=crop"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent"></div>
+        </div>
+        
+        <div className="relative z-10 max-w-3xl w-full">
+          <div className="flex items-center space-x-2 mb-3 sm:mb-4 reveal-on-scroll" style={{ transitionDelay: '0.1s' }}>
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
             <span className="font-label-caps text-xs sm:text-label-caps text-primary tracking-widest uppercase">Elite Protection Services</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl md:text-display-lg font-display-lg mb-4 sm:mb-8 leading-tight text-glow reveal-on-scroll" style={{ transitionDelay: '0.2s' }}>
-            Precision Security for Absolute Risk Mitigation
+          <h1 className="text-3xl sm:text-5xl md:text-display-lg font-display-lg mb-4 sm:mb-6 leading-tight text-white reveal-on-scroll" style={{ transitionDelay: '0.2s' }}>
+            Precision Security for <span className="text-primary text-glow">Absolute Risk Mitigation.</span>
           </h1>
-          <p className="text-base sm:text-body-lg font-body-lg text-on-surface-variant max-w-2xl reveal-on-scroll" style={{ transitionDelay: '0.3s' }}>
+          <p className="text-sm sm:text-body-lg font-body-lg text-on-surface-variant max-w-2xl reveal-on-scroll" style={{ transitionDelay: '0.3s' }}>
             Specialized tactical operations and defensive frameworks engineered to safeguard industrial sectors, high-value corporate complexes, and critical infrastructure.
           </p>
         </div>
-      </header>
+      </section>
 
       {/* Core Competencies (Bento Grid Area) */}
-      <main className="px-gutter max-w-container-max mx-auto pb-section-gap" id="services">
+      <main className="px-gutter max-w-container-max mx-auto pb-section-gap pt-16 sm:pt-24" id="services">
         <div className="mb-12 sm:mb-16 reveal-on-scroll" style={{ transitionDelay: '0.1s' }}>
           <h2 className="text-3xl sm:text-headline-md font-display-lg text-white mb-4">Core Competencies</h2>
-          <p className="text-on-surface-variant max-w-2xl text-base sm:text-body-lg">A sophisticated blend of physical protection and tactical field security for critical installations.</p>
+          <div className="w-16 sm:w-24 h-1 bg-primary"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8">
           
-          {/* Service 1: Physical Guarding (Large Feature Card) */}
+          {/* Service 1: Physical Guarding */}
           <div id="physical-guarding" className="md:col-span-8 group relative overflow-hidden rounded-xl border border-border-subtle card-hover reveal-on-scroll" style={{ transitionDelay: '0.2s' }}>
             <img alt="Physical Guarding Team" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 card-img brightness-[0.6] sm:brightness-[0.7] saturate-50" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=800&fit=crop"/>
             <div className="absolute inset-0" style={{ background: 'linear-gradient(rgba(12, 19, 34, 0.2) 20%, rgba(12, 19, 34, 0.95) 100%)' }}></div>
@@ -80,7 +69,7 @@ export default function ServicesPage() {
               </div>
               <h3 className="text-2xl sm:text-4xl font-display-lg mb-3 sm:mb-4 text-white">Physical Guarding</h3>
               <p className="text-sm sm:text-body-md font-body-md text-on-surface-variant max-w-lg mb-6 sm:mb-8">
-                Professional, vetted, and highly-trained security officers providing strict entry checking, visible deterrence, and dynamic response routines across critical environments.
+                Strict entry vetting, visible site deterrence, and regular dynamic patrolling across enterprise zones.
               </p>
               <div className="flex flex-wrap gap-2 sm:gap-4">
                 <span className="px-2.5 py-1 bg-surface-container-highest/80 border border-border-subtle rounded-full text-[10px] sm:text-xs font-label-caps text-white">UNIFORMED UNITS</span>
@@ -90,18 +79,18 @@ export default function ServicesPage() {
             </div>
           </div>
           
-          {/* Service 2: Risk Assessment (Text Panel Feature Card) */}
+          {/* Service 2: Risk Assessment */}
           <div id="risk-assessment" className="md:col-span-4 glass-card p-6 sm:p-10 rounded-xl flex flex-col justify-center border border-border-subtle hover:border-primary/50 transition-colors reveal-on-scroll" style={{ transitionDelay: '0.3s' }}>
             <div className="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center mb-6 sm:mb-8 border border-white/5">
               <span className="material-symbols-outlined text-primary">analytics</span>
             </div>
             <div>
               <h3 className="text-xl sm:text-headline-md font-headline-md text-white mb-2 sm:mb-4">Risk Assessment</h3>
-              <p className="text-on-surface-variant text-sm sm:text-body-md">Advanced threat modeling, comprehensive vulnerability analysis, and data protective posture evaluation for business infrastructure.</p>
+              <p className="text-on-surface-variant text-sm sm:text-body-md">Advanced threat modeling and comprehensive site vulnerability calculations to minimize active infrastructure gaps.</p>
             </div>
           </div>
           
-          {/* Service 3: Access Control (Vertical Dynamic Feature Card) */}
+          {/* Service 3: Access Control */}
           <div id="access-control" className="md:col-span-4 group relative overflow-hidden rounded-xl border border-border-subtle card-hover reveal-on-scroll" style={{ transitionDelay: '0.2s' }}>
             <img alt="Biometric access control system interface" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 card-img brightness-50 sm:brightness-75" src="https://images.unsplash.com/photo-1558002038-1055907df827?w=800"/>
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
@@ -112,13 +101,13 @@ export default function ServicesPage() {
               </div>
               <h3 className="text-2xl sm:text-3xl font-headline-md mb-3 sm:mb-4 text-white">Access Control</h3>
               <p className="text-sm sm:text-body-md font-body-md text-on-surface-variant mb-6">
-                Biometric checkpoints and digital identity check systems unified cleanly into an absolute entry monitoring security architecture.
+                Biometric verification checkpoints integrated with perimeter tracking arrays for total entrance governance.
               </p>
               <Link to="/services" className="w-full py-3 border border-border-subtle hover:bg-white/5 text-white transition-colors font-label-caps text-xs tracking-widest uppercase text-center block rounded-sm">View Technologies</Link>
             </div>
           </div>
           
-          {/* Service 4: Monitoring Center (Image Feature Card) */}
+          {/* Service 4: Monitoring Center */}
           <div id="monitoring" className="md:col-span-8 group relative overflow-hidden rounded-xl border border-border-subtle card-hover reveal-on-scroll" style={{ transitionDelay: '0.3s' }}>
             <img alt="Monitoring Center" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 card-img brightness-75 saturate-[0.8]" src="https://images.unsplash.com/photo-1557821552-17105176677c?w=1200&h=800&fit=crop"/>
             <div className="absolute inset-0" style={{ background: 'linear-gradient(rgba(12, 19, 34, 0) 40%, rgba(12, 19, 34, 0.95) 100%)' }}></div>
@@ -127,11 +116,11 @@ export default function ServicesPage() {
                 <span className="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-full" style={{ fontVariationSettings: "'FILL' 1" }}>visibility</span>
                 <h3 className="text-xl sm:text-headline-md font-display-lg text-white">24/7 Monitoring</h3>
               </div>
-              <p className="text-on-surface-variant max-w-md text-sm sm:text-body-md">Continuous high-definition surveillance arrays and rapid-response tactical dispatch coordinated through operations rooms.</p>
+              <p className="text-on-surface-variant max-w-md text-sm sm:text-body-md">Continuous surveillance arrays backed by real-time dispatch operations to intercept anomalies immediately.</p>
             </div>
           </div>
           
-          {/* Service 5: Tactical Fleet (Wide Feature Block) */}
+          {/* Service 5: Tactical Fleet */}
           <div id="tactical-deployment" className="md:col-span-12 group relative overflow-hidden rounded-xl border border-border-subtle card-hover reveal-on-scroll" style={{ transitionDelay: '0.2s' }}>
             <img alt="Security Fleet and Personnel" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 card-img brightness-[0.5] sm:brightness-[0.6] saturate-50" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&h=900&fit=crop"/>
             <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-background via-background/80 md:via-background/60 to-transparent"></div>
@@ -143,7 +132,7 @@ export default function ServicesPage() {
                 </div>
                 <h3 className="text-2xl sm:text-4xl font-display-lg mb-3 sm:mb-4 text-white">Tactical Deployment</h3>
                 <p className="text-sm sm:text-body-md font-body-md text-on-surface-variant mb-6 sm:mb-8">
-                  Active responsive units, vulnerability protection routines, and defensive perimeter controls utilizing tracking vehicle fleets to instantly scale enterprise layout security postures.
+                  Highly responsive specialized patrol units and mobile fleets capable of executing deployment escalation protocols instantly.
                 </p>
                 <div className="grid grid-cols-2 gap-4 sm:gap-8">
                   <div className="border-l-2 border-primary pl-3 sm:pl-4">
@@ -163,7 +152,7 @@ export default function ServicesPage() {
       </main>
 
       {/* Data Visualization Dashboard Section */}
-      <section className="py-16 sm:py-section-gap px-gutter bg-surface-container-lowest overflow-hidden relative">
+      <section className="py-16 sm:py-section-gap px-gutter bg-surface-container-lowest overflow-hidden relative rounded-xl mx-auto max-w-container-max mb-8 sm:mb-16">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
         <div className="max-w-container-max mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-16 md:gap-24 items-center">
@@ -175,21 +164,21 @@ export default function ServicesPage() {
                   <span className="font-data-mono text-xl sm:text-headline-md text-primary opacity-20 group-hover:opacity-100 transition-opacity">01</span>
                   <div>
                     <h3 className="text-base sm:text-body-lg font-bold text-white mb-1 sm:mb-2">Perimeter Hardening</h3>
-                    <p className="text-on-surface-variant text-sm sm:text-body-md">Physical security structures deployed alongside tech integrations to establish multi-tier barrier defense lines.</p>
+                    <p className="text-on-surface-variant text-sm sm:text-body-md">Physical barricades combined with high-tier technological systems for verified multi-layer zone protection.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-4 sm:gap-6 group">
                   <span className="font-data-mono text-xl sm:text-headline-md text-primary opacity-20 group-hover:opacity-100 transition-opacity">02</span>
                   <div>
                     <h3 className="text-base sm:text-body-lg font-bold text-white mb-1 sm:mb-2">Smart Monitoring</h3>
-                    <p className="text-on-surface-variant text-sm sm:text-body-md">Live operational center monitoring that immediately highlights unexpected network behavior logs.</p>
+                    <p className="text-on-surface-variant text-sm sm:text-body-md">Real-time centralized asset surveillance ensuring swift automated handling of operational layout logs.</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-4 sm:gap-6 group">
                   <span className="font-data-mono text-xl sm:text-headline-md text-primary opacity-20 group-hover:opacity-100 transition-opacity">03</span>
                   <div>
                     <h3 className="text-base sm:text-body-lg font-bold text-white mb-1 sm:mb-2">Tactical Deployment</h3>
-                    <p className="text-on-surface-variant text-sm sm:text-body-md">Highly agile response dispatch vectors primed to handle site level situational scaling instantly.</p>
+                    <p className="text-on-surface-variant text-sm sm:text-body-md">Rapid localized response assets equipped to execute tactical emergency countermeasures instantly.</p>
                   </div>
                 </li>
               </ul>

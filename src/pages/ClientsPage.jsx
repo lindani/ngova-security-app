@@ -84,8 +84,11 @@ export default function ClientsPage() {
   const carouselRef = useRef(null)
   const [isAutoScrolling, setIsAutoScrolling] = useState(true)
   const autoScrollIntervalRef = useRef(null)
+  const userInteractionTimeoutRef = useRef(null)
+  
   useRevealAll(containerRef, '.reveal-on-scroll')
 
+  // Auto-scroll loop engine
   useEffect(() => {
     if (!isAutoScrolling || !carouselRef.current) return
 
@@ -95,7 +98,6 @@ export default function ClientsPage() {
       
       const scrollAmount = 320
       const maxScroll = carousel.scrollWidth - carousel.clientWidth
-      // FIX: Dynamically read live scroll positions to keep manual touch interactions in sync
       let newScroll = carousel.scrollLeft + scrollAmount
       
       if (newScroll >= maxScroll - 5) {
@@ -108,17 +110,34 @@ export default function ClientsPage() {
     return () => clearInterval(autoScrollIntervalRef.current)
   }, [isAutoScrolling])
 
+  // Clear interaction timers on unmount
+  useEffect(() => {
+    return () => {
+      if (userInteractionTimeoutRef.current) {
+        clearTimeout(userInteractionTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  // Handles manual control arrows or swipes, briefly pausing autoscroll
   const scrollCarousel = (direction) => {
     const carousel = carouselRef.current
     if (!carousel) return
     
     setIsAutoScrolling(false)
+    if (userInteractionTimeoutRef.current) clearTimeout(userInteractionTimeoutRef.current)
+
     const scrollAmount = 320
     const newScroll = direction === 'left' 
       ? Math.max(0, carousel.scrollLeft - scrollAmount)
       : Math.min(carousel.scrollWidth - carousel.clientWidth, carousel.scrollLeft + scrollAmount)
       
     carousel.scrollTo({ left: newScroll, behavior: 'smooth' })
+
+    // Resume autoscrolling after 8 seconds of inactivity
+    userInteractionTimeoutRef.current = setTimeout(() => {
+      setIsAutoScrolling(true)
+    }, 8000)
   }
 
   const carouselClients = clients.filter(c => c.carousel)
@@ -126,13 +145,13 @@ export default function ClientsPage() {
   return (
     <div ref={containerRef} className="pt-16 sm:pt-24 overflow-x-hidden text-on-background bg-background selection:bg-primary selection:text-on-primary">
       {/* Hero Section */}
-      <section className="relative min-h-[460px] sm:h-[650px] flex items-end pb-12 sm:pb-20 px-gutter max-w-container-max mx-auto overflow-hidden rounded-xl mt-4 sm:mt-8">
+      <section className="relative min-h-[100vh] sm:min-h-[650px] sm:h-[650px] flex items-end pb-12 sm:pb-20 px-gutter max-w-container-max mx-auto overflow-hidden rounded-xl mt-0 sm:mt-8">
         <div className="absolute inset-0 z-0">
           <img alt="Professional Security Fleet and Personnel" className="w-full h-full object-cover opacity-40 sm:opacity-60 saturate-50" src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=900&fit=crop"/>
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent"></div>
         </div>
         <div className="relative z-10 max-w-3xl w-full">
-          <span className="font-label-caps text-xs sm:text-label-caps text-primary tracking-widest uppercase mb-3 sm:mb-4 block">Obsidian Sentinel Protection</span>
+          <span className="font-label-caps text-xs sm:text-label-caps text-primary tracking-widest uppercase mb-3 sm:mb-4 block">Ngova Security</span>
           <h1 className="text-3xl sm:text-5xl md:text-display-lg font-display-lg mb-4 sm:mb-6 leading-tight text-white">
             Securing the Icons of <span className="text-primary text-glow">African Industry.</span>
           </h1>
@@ -222,6 +241,7 @@ export default function ClientsPage() {
             
             <div
               ref={carouselRef}
+              onTouchStart={() => setIsAutoScrolling(false)}
               className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory hide-scrollbar animate-fade-in"
             >
               {carouselClients.map((client) => (
@@ -330,7 +350,6 @@ export default function ClientsPage() {
           <Link className="bg-primary text-on-primary px-8 py-3.5 rounded-lg font-body-md font-bold text-sm text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/10" to="/quote">
             Consult with an Expert
           </Link>
-          {/* FIXED: Catalog link now properly routes via Link to /services */}
           <Link className="border border-white/10 hover:bg-white/5 px-8 py-3.5 rounded-lg font-body-md text-sm text-center text-white transition-all flex items-center justify-center" to="/services">
             View Service Catalog
           </Link>

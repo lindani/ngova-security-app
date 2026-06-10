@@ -39,7 +39,9 @@ const navLinks = [
     to: '/quote', 
     label: 'Contact',
     description: 'Get in touch for a consultation',
-    icon: 'mail'
+    icon: 'mail',
+    // Passing Router State parameter directly into navigation array items
+    mode: 'contact' 
   },
 ]
 
@@ -53,7 +55,7 @@ const searchableContent = [
   { title: 'Tactical Deployment', path: '/services#tactical-deployment', keywords: ['tactical', 'deployment', 'fleet', 'patrols', 'response'] },
   { title: 'Clients', path: '/clients', keywords: ['clients', 'partners', 'partnerships', 'trust'] },
   { title: 'Careers', path: '/careers', keywords: ['careers', 'jobs', 'work', 'employment'] },
-  { title: 'Contact', path: '/quote', keywords: ['contact', 'quote', 'request', 'inquiry'] },
+  { title: 'Contact', path: '/quote', mode: 'contact', keywords: ['contact', 'quote', 'request', 'inquiry'] },
 ]
 
 export default function Navbar() {
@@ -97,8 +99,9 @@ export default function Navbar() {
     setSearchResults(results)
   }
 
-  const handleSearchSelect = (path) => {
-    navigate(path)
+  const handleSearchSelect = (item) => {
+    // Pass mode parameter from search selections if it exists
+    navigate(item.path, { state: { mode: item.mode || 'quote' } })
     setSearchQuery('')
     setSearchResults([])
     setSearchOpen(false)
@@ -128,6 +131,7 @@ export default function Navbar() {
               <div key={link.to} className="relative group">
                 <Link
                   to={link.to}
+                  state={{ mode: link.mode || 'quote' }} // Injects routing context parameter safely
                   onMouseEnter={() => hasSubmenu && setOpenDropdown(link.to)}
                   onMouseLeave={() => setOpenDropdown(null)}
                   className={`flex items-center gap-1.5 lg:gap-2 px-3 lg:px-4 py-2 rounded-md text-sm font-semibold transition-all duration-300 ${
@@ -163,8 +167,9 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3 flex-shrink-0">
-          <Link to="/quote" className="bg-primary text-on-primary px-5 lg:px-6 py-2 font-bold hover:bg-primary/90 transition-all rounded-md text-sm shadow-lg flex items-center gap-2">
-            <span className="material-symbols-outlined text-lg">mail</span> Get Quote
+          {/* Explicitly routes as 'quote' layout type */}
+          <Link to="/quote" state={{ mode: 'quote' }} className="bg-primary text-on-primary px-5 lg:px-6 py-2 font-bold hover:bg-primary/90 transition-all rounded-md text-sm shadow-lg flex items-center gap-2">
+            <span className="material-symbols-outlined text-lg">request_quote</span> Get Quote
           </Link>
         </div>
       </nav>
@@ -231,7 +236,7 @@ export default function Navbar() {
                 }
 
                 return (
-                  <Link key={link.to} to={link.to}
+                  <Link key={link.to} to={link.to} state={{ mode: link.mode || 'quote' }}
                     className={`w-full flex items-center gap-4 px-4 py-4 rounded-xl transition-all border border-transparent ${
                       isActive ? 'bg-primary/15 border-primary/20' : 'hover:bg-white/5'
                     }`}
@@ -247,8 +252,9 @@ export default function Navbar() {
             </div>
             
             <div className="p-4 bg-white/[0.02] border-t border-white/5">
-              <Link to="/quote" className="w-full flex items-center justify-center gap-2 bg-primary text-black py-3.5 font-bold rounded-xl shadow-lg shadow-primary/20">
-                <span className="material-symbols-outlined">mail</span>
+              {/* Mobile primary target defaults explicitly to quotation engine */}
+              <Link to="/quote" state={{ mode: 'quote' }} className="w-full flex items-center justify-center gap-2 bg-primary text-black py-3.5 font-bold rounded-xl shadow-lg shadow-primary/20">
+                <span className="material-symbols-outlined">request_quote</span>
                 Get a Quote
               </Link>
             </div>
