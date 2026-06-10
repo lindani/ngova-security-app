@@ -75,13 +75,13 @@ export default function CareersPage() {
           <div className="z-10 reveal-hidden">
             <span className="font-label-caps text-xs sm:text-label-caps text-primary mb-3 block tracking-widest uppercase">CAREERS AT NGOVA</span>
             <h1 className="font-display-lg text-3xl sm:text-5xl lg:text-display-lg mb-4 sm:mb-6 leading-tight text-white">
-              Join the Elite Force
+              Join the <span className="text-primary text-glow">Elite Force.</span>
             </h1>
             <p className="font-body-lg text-sm sm:text-body-lg text-on-surface-variant mb-6 sm:mb-8 max-w-xl leading-relaxed">
               Build your future with a dedicated team maintaining the gold standard in tactical security solutions.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <a className="bg-primary text-black text-center px-8 py-3.5 font-bold transition-all hover:brightness-110 active:scale-95 rounded-lg text-sm" href="#apply">
+              <a className="bg-primary text-on-primary text-center px-8 py-3.5 font-bold transition-all hover:brightness-110 active:scale-95 rounded-lg text-sm" href="#apply">
                 Apply Now
               </a>
               <a className="border border-white/10 text-center text-white px-8 py-3.5 font-bold hover:bg-white/5 transition-all rounded-lg text-sm" href="#values">
