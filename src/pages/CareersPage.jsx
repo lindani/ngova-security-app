@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useRevealAll } from '../hooks/useReveal'
+import Toast from '../components/Toast'
 
 export default function CareersPage() {
   const containerRef = useRef(null)
@@ -9,7 +10,7 @@ export default function CareersPage() {
   const [file, setFile] = useState(null)
   const [isDragging, setIsDragging] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
+  const [showToast, setShowToast] = useState(false)
 
   // Controlled form values
   const [fullName, setFullName] = useState('')
@@ -41,34 +42,34 @@ export default function CareersPage() {
     }
   }
 
+  const handleResetForm = () => {
+    setFullName('')
+    setEmail('')
+    setPosition('physical-guard')
+    setPhone('')
+    setFile(null)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate tactical pipeline transmission
     setTimeout(() => {
       setIsSubmitting(false)
-      setIsSuccess(true)
-      
-      const targetElement = document.getElementById('apply')
-      if (targetElement) {
-        window.scrollTo({ top: targetElement.offsetTop - 96, behavior: 'smooth' })
-      }
-      
-      // Reset state properties cleanly after 7 seconds
-      setTimeout(() => {
-        setIsSuccess(false)
-        setFile(null)
-        setFullName('')
-        setEmail('')
-        setPosition('physical-guard')
-        setPhone('')
-      }, 7000)
+      setShowToast(true)
+      handleResetForm() 
     }, 2000)
   }
 
   return (
     <div ref={containerRef} className="pt-16 sm:pt-24 overflow-x-hidden text-on-background bg-background">
+      {showToast && (
+        <Toast 
+          message="Your application has been received successfully. Our team will review your details and get back to you soon."
+          onClose={() => setShowToast(false)}
+        />
+      )}
+
       {/* Hero Section */}
       <section className="relative py-12 sm:py-section-gap px-gutter max-w-container-max mx-auto overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-center">
@@ -145,16 +146,14 @@ export default function CareersPage() {
         </div>
       </section>
 
-      {/* Recruitment Pipeline Interface */}
+      {/* Recruitment Interface */}
       <section className="py-12 sm:py-section-gap px-gutter max-w-container-max mx-auto scroll-mt-24" id="apply">
-        {/* Operational Form Workspace Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-start transition-all duration-500">
           
-          {/* Informational Pipeline Column */}
           <div className="lg:col-span-1 reveal-hidden">
-            <h2 className="font-display-lg text-2xl sm:text-display-lg mb-4 sm:mb-6 text-white">Ready to Enlist?</h2>
+            <h2 className="font-display-lg text-2xl sm:text-display-lg mb-4 sm:mb-6 text-white">Ready to Join Us?</h2>
             <p className="text-sm sm:text-body-md text-on-surface-variant mb-6 sm:mb-8 leading-relaxed">
-              Join a crew that protects infrastructure assets and rewards your expertise. Our recruitment division evaluates application pipelines within 48 business hours.
+              Become part of a dedicated team that values your skill and helps protect our clients' most valuable assets. We look forward to reviewing your application.
             </p>
             <div className="space-y-4 sm:space-y-6">
               <div className="flex items-start gap-4 p-4 rounded-lg bg-white/[0.02] border border-white/5">
@@ -181,163 +180,132 @@ export default function CareersPage() {
             </div>
           </div>
           
-          {/* Form Pipeline Input Box Column */}
           <div className="lg:col-span-2">
             <div className="glass-panel p-5 sm:p-8 md:p-12 shadow-2xl border border-white/5 bg-white/[0.02] rounded-2xl min-h-[400px] flex flex-col justify-center">
-              {isSuccess ? (
-                /* Success inner view */
-                <div className="text-center py-8 px-4 sm:py-12 sm:px-6 animate-fade-in space-y-6">
-                  <div className="w-16 h-16 bg-security-emerald/10 border border-security-emerald/20 rounded-full flex items-center justify-center mx-auto text-security-emerald">
-                    <span className="material-symbols-outlined text-3xl sm:text-4xl">verified</span>
+              <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
+                  <div className="reveal-field space-y-2">
+                    <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="full-name">Full Name</label>
+                    <input 
+                      className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3" 
+                      id="full-name" 
+                      placeholder="Enter full legal name" 
+                      required 
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
                   </div>
-                  <div>
-                    <h2 className="font-display-lg text-2xl sm:text-3xl font-bold text-white mb-3 tracking-tight">
-                      Application Transmitted Successfully
-                    </h2>
-                    <p className="text-on-surface-variant text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-                      Your structural security profile and digital credentials have entered our pipeline. 
-                      Our recruitment division evaluates application tracks within 48 business hours.
-                    </p>
-                  </div>
-                  <div className="pt-2">
-                    <Link 
-                      to="/" 
-                      className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white border border-white/10 px-6 py-3 rounded-lg font-semibold text-sm transition-all"
-                    >
-                      <span className="material-symbols-outlined text-base">arrow_back</span>
-                      Return to Command Overview
-                    </Link>
+                  <div className="reveal-field space-y-2">
+                    <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="email">Email Address</label>
+                    <input 
+                      className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3" 
+                      id="email" 
+                      placeholder="email@example.com" 
+                      required 
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
                   </div>
                 </div>
-              ) : (
-                /* The operational inputs view */
-                <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
-                    <div className="reveal-field space-y-2">
-                      <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="full-name">Full Name</label>
-                      <input 
-                        className="w-full bg-neutral-900 border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3" 
-                        id="full-name" 
-                        placeholder="Enter full legal name" 
-                        required 
-                        type="text"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                      />
-                    </div>
-                    <div className="reveal-field space-y-2">
-                      <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="email">Email Address</label>
-                      <input 
-                        className="w-full bg-neutral-900 border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3" 
-                        id="email" 
-                        placeholder="email@example.com" 
-                        required 
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
+                  <div className="reveal-field space-y-2">
+                    <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="position">Position Applied For</label>
+                    <div className="relative">
+                      <select 
+                        className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3 appearance-none pr-10" 
+                        id="position"
+                        value={position}
+                        onChange={(e) => setPosition(e.target.value)}
+                      >
+                        <option value="physical-guard">Physical Guarding</option>
+                        <option value="surveillance">Surveillance Specialist</option>
+                        <option value="risk-analyst">Risk Assessment Analyst</option>
+                        <option value="executive-protection">Executive Protection</option>
+                        <option value="k9-handler">K9 Handler</option>
+                      </select>
+                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none text-xl">
+                        expand_more
+                      </span>
                     </div>
                   </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
-                    <div className="reveal-field space-y-2">
-                      <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="position">Position Applied For</label>
-                      <div className="relative">
-                        <select 
-                          className="w-full bg-neutral-900 border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3 appearance-none pr-10" 
-                          id="position"
-                          value={position}
-                          onChange={(e) => setPosition(e.target.value)}
-                        >
-                          <option value="physical-guard">Physical Guarding</option>
-                          <option value="surveillance">Surveillance Specialist</option>
-                          <option value="risk-analyst">Risk Assessment Analyst</option>
-                          <option value="executive-protection">Executive Protection</option>
-                          <option value="k9-handler">K9 Handler</option>
-                        </select>
-                        <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none text-xl">
-                          expand_more
-                        </span>
-                      </div>
-                    </div>
-                    <div className="reveal-field space-y-2">
-                      <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="phone">Phone Number</label>
-                      <input 
-                        className="w-full bg-neutral-900 border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3" 
-                        id="phone" 
-                        placeholder="+27 (0) 00 000 0000" 
-                        required 
-                        type="tel"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                      />
-                    </div>
+                  <div className="reveal-field space-y-2">
+                    <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="phone">Phone Number</label>
+                    <input 
+                      className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3" 
+                      id="phone" 
+                      placeholder="+27 (0) 00 000 0000" 
+                      required 
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
                   </div>
+                </div>
 
-                  {/* Upload CV Dropzone Container */}
-                  <div className="reveal-field space-y-3">
-                    <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block">Upload CV / Resume</label>
-                    <div 
-                      className={`border-2 border-dashed p-6 sm:p-10 text-center transition-all duration-300 cursor-pointer group rounded-xl relative overflow-hidden ${
-                        isDragging 
-                          ? 'border-primary bg-primary/10' 
-                          : file
-                            ? 'border-security-emerald/50 bg-security-emerald/5'
-                            : 'border-white/10 bg-neutral-900/50 hover:border-primary hover:bg-neutral-900'
-                      }`}
-                      onDragOver={handleDragOver}
-                      onDragLeave={handleDragLeave}
-                      onDrop={handleDrop}
-                      onClick={() => document.getElementById('cv-upload').click()}
-                    >
-                      <div className="relative z-10 flex flex-col items-center">
-                        <span className={`material-symbols-outlined text-3xl sm:text-4xl mb-2 transition-colors duration-300 inline-block ${
-                          file ? 'text-security-emerald' : 'text-on-surface-variant group-hover:text-primary'
-                        }`}>
-                          {file ? 'task_alt' : 'cloud_upload'}
-                        </span>
-                        <p className="text-white text-sm font-medium">
-                          {file ? (
-                            <span>Document Loaded: <span className="text-primary font-bold">{file.name}</span></span>
-                          ) : (
-                            <span className="px-2 block">
-                              <span className="hidden sm:inline">Drag and drop your CV here or </span>
-                              <span className="text-primary font-bold hover:underline">Click to browse files</span>
-                            </span>
-                          )}
-                        </p>
-                        <p className="text-[10px] text-on-surface-variant mt-1.5 font-mono">PDF, DOCX (Max 10MB)</p>
-                      </div>
-                      <input accept=".pdf,.doc,.docx" className="hidden" id="cv-upload" type="file" onChange={handleFileChange} />
+                <div className="reveal-field space-y-3">
+                  <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block">Upload CV / Resume</label>
+                  <div 
+                    className={`border-2 border-dashed p-6 sm:p-10 text-center transition-all duration-300 cursor-pointer group rounded-xl relative overflow-hidden ${
+                      isDragging 
+                        ? 'border-primary bg-primary/10' 
+                        : file
+                          ? 'border-security-emerald/50 bg-security-emerald/5'
+                          : 'border-white/10 bg-black/50 hover:border-primary hover:bg-black'
+                    }`}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    onClick={() => document.getElementById('cv-upload').click()}
+                  >
+                    <div className="relative z-10 flex flex-col items-center">
+                      <span className={`material-symbols-outlined text-3xl sm:text-4xl mb-2 transition-colors duration-300 inline-block ${
+                        file ? 'text-security-emerald' : 'text-on-surface-variant group-hover:text-primary'
+                      }`}>
+                        {file ? 'task_alt' : 'cloud_upload'}
+                      </span>
+                      <p className="text-white text-sm font-medium">
+                        {file ? (
+                          <span>Document Loaded: <span className="text-primary font-bold">{file.name}</span></span>
+                        ) : (
+                          <span className="px-2 block">
+                            <span className="hidden sm:inline">Drag and drop your CV here or </span>
+                            <span className="text-primary font-bold hover:underline">Click to browse files</span>
+                          </span>
+                        )}
+                      </p>
+                      <p className="text-[10px] text-on-surface-variant mt-1.5 font-mono">PDF, DOCX (Max 10MB)</p>
                     </div>
+                    <input accept=".pdf,.doc,.docx" className="hidden" id="cv-upload" type="file" onChange={handleFileChange} />
                   </div>
+                </div>
 
-                  {/* Form Action Submissions */}
-                  <div className="reveal-field pt-2">
-                    <button 
-                      className={`w-full md:w-auto text-on-primary px-10 py-3.5 font-bold rounded-lg transition-all text-sm flex items-center justify-center gap-2.5 ${
-                        isSubmitting 
-                          ? 'bg-neutral-800 text-on-surface-variant opacity-80 cursor-not-allowed' 
-                          : 'bg-primary text-black hover:brightness-110 active:scale-[0.98]'
-                      }`} 
-                      disabled={isSubmitting}
-                      type="submit"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <span className="animate-spin material-symbols-outlined text-lg">sync</span>
-                          <span>TRANSMITTING DOSSIER...</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>Submit Application</span>
-                          <span className="material-symbols-outlined text-lg">send</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </form>
-              )}
+                <div className="reveal-field pt-2">
+                  <button 
+                    className={`w-full md:w-auto text-on-primary px-10 py-3.5 font-bold rounded-lg transition-all text-sm flex items-center justify-center gap-2.5 ${
+                      isSubmitting 
+                        ? 'bg-neutral-800 text-on-surface-variant opacity-80 cursor-not-allowed' 
+                        : 'bg-primary text-black hover:brightness-110 active:scale-[0.98]'
+                    }`} 
+                    disabled={isSubmitting}
+                    type="submit"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <span className="animate-spin material-symbols-outlined text-lg">sync</span>
+                        <span>Sending Application...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Submit Application</span>
+                        <span className="material-symbols-outlined text-lg">send</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
 
