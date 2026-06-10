@@ -6,8 +6,14 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-fortress-black border-t border-white/5 py-12 sm:py-20" id="contact">
-      <div className="max-w-container-max mx-auto px-gutter grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 sm:gap-12">
+    <footer className="relative bg-fortress-black border-t border-white/5 py-12 sm:py-20 overflow-hidden" id="contact">
+      {/* Background Image Layer from public folder */}
+      <div 
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-[0.07] mix-blend-luminosity pointer-events-none"
+        style={{ backgroundImage: 'url("/images/footer/footer-bg.jpg")' }} // Update this path to your file name inside public/
+      />
+
+      <div className="relative z-10 max-w-container-max mx-auto px-gutter grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 sm:gap-12">
         {/* Brand Column */}
         <div className="md:col-span-4 flex flex-col gap-4 sm:gap-6">
           <div className="flex items-center">
@@ -152,7 +158,7 @@ export default function Footer() {
       </div>
 
       {/* Statutory Corporate Disclosures Banner */}
-      <div className="max-w-container-max mx-auto px-gutter mt-12 pt-6 border-t border-white/5">
+      <div className="relative z-10 max-w-container-max mx-auto px-gutter mt-12 pt-6 border-t border-white/5">
         <p className="text-[11px] text-on-surface-variant/50 leading-relaxed text-center md:text-left tracking-wide">
           <span className="text-on-surface-variant/70 font-semibold uppercase tracking-wider block md:inline md:mr-2">Statutory Disclosure:</span>
           Ngova Trading (Pty) Ltd As Ngova Security Services &bull; Registration No: 2016/035498/07 &bull; PSIRA Registration No: 2766562. 
@@ -161,7 +167,7 @@ export default function Footer() {
       </div>
 
       {/* Sub-Footer Copyright Area */}
-      <div className="max-w-container-max mx-auto px-gutter mt-6 pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="relative z-10 max-w-container-max mx-auto px-gutter mt-6 pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
         <p className="text-on-surface-variant text-xs opacity-60 text-center sm:text-left">
           &copy; {currentYear} Ngova Trading (Pty) Ltd As Ngova Security Services. All Rights Reserved.
         </p>

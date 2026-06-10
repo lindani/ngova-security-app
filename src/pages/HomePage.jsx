@@ -13,9 +13,9 @@ const SCROLL_CAROUSEL_ITEMS = [
   { i: 5,  url: '/images/homepage/gallery-10.jpg?w=800&h=600&fit=crop', title: 'Perimeter Security',   sub: 'Boundary-layer threat detection and response.' },
   { i: 6,  url: '/images/homepage/gallery-9.jpg?w=800&h=600&fit=crop', title: 'Infrastructure Guard', sub: 'Critical facility hardening and monitoring.' },
   { i: 7,  url: '/images/homepage/gallery-8.jpg?w=800&h=600&fit=crop', title: 'Asset Protection',     sub: 'High-value asset containment systems.' },
-  { i: 8,  url: '/images/homepage/gallery-2.jpg?w=800&h=600&fit=crop', title: 'Retail Security',      sub: 'Loss prevention and store safety networks.' },
+  { i: 8,  url: '/images/homepage/gallery-2.jpg?w=800&h=600&fit=crop', title: 'Retail Security',       sub: 'Loss prevention and store safety networks.' },
   { i: 9,  url: '/images/homepage/gallery-7.jpg?w=800&h=600&fit=crop', title: 'Executive Security',   sub: 'Close-protection and escort operations.' },
-  { i: 10, url: '/images/homepage/access-systems.jpg?w=800&h=600&fit=crop', title: 'Access Systems',       sub: 'Biometric and credential control systems.' },
+  { i: 10, url: '/images/homepage/gallery-11.jpg?w=800&h=600&fit=crop', title: 'Access Systems',       sub: 'Biometric and credential control systems.' },
 ]
 
 const TESTIMONIALS = [
@@ -76,8 +76,10 @@ function useAutoCarousel(ref, count, interval = 4000) {
     timerRef.current = setInterval(() => {
       const el = ref.current
       if (!el) return
+      const itemEl = el.firstElementChild
+      const step = itemEl ? itemEl.offsetWidth + 20 : 320 // Dynamically pull spacing card step value + gap
       const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 5
-      el.scrollTo({ left: atEnd ? 0 : el.scrollLeft + 320, behavior: 'smooth' })
+      el.scrollTo({ left: atEnd ? 0 : el.scrollLeft + step, behavior: 'smooth' })
     }, interval)
   }
 
@@ -86,7 +88,9 @@ function useAutoCarousel(ref, count, interval = 4000) {
     if (!el) return
     stop()
     clearTimeout(resumeRef.current)
-    el.scrollBy({ left: dir === 'left' ? -320 : 320, behavior: 'smooth' })
+    const itemEl = el.firstElementChild
+    const step = itemEl ? itemEl.offsetWidth + 20 : 320
+    el.scrollBy({ left: dir === 'left' ? -step : step, behavior: 'smooth' })
     resumeRef.current = setTimeout(start, 8000)
   }
 
@@ -95,8 +99,9 @@ function useAutoCarousel(ref, count, interval = 4000) {
     if (!el) return
     stop()
     clearTimeout(resumeRef.current)
-    const cardWidth = el.scrollWidth / count
-    el.scrollTo({ left: cardWidth * i, behavior: 'smooth' })
+    const itemEl = el.firstElementChild
+    const step = itemEl ? itemEl.offsetWidth + 20 : el.scrollWidth / count
+    el.scrollTo({ left: step * i, behavior: 'smooth' })
     resumeRef.current = setTimeout(start, 8000)
   }
 
@@ -104,8 +109,9 @@ function useAutoCarousel(ref, count, interval = 4000) {
     const el = ref.current
     if (!el) return
     const onScroll = () => {
-      const cardWidth = el.scrollWidth / count
-      const idx = Math.round(el.scrollLeft / cardWidth)
+      const itemEl = el.firstElementChild
+      const step = itemEl ? itemEl.offsetWidth + 20 : el.scrollWidth / count
+      const idx = Math.round(el.scrollLeft / step)
       setActiveIndex(Math.min(idx, count - 1))
     }
     el.addEventListener('scroll', onScroll, { passive: true })
@@ -208,7 +214,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── Expertise Gallery ────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-section-gap max-w-container-max mx-auto px-gutter" id="gallery">
+      <section className="py-16 sm:py-section-gap max-w-container-max mx-auto px-gutter overflow-hidden" id="gallery">
 
         <div className="mb-10 sm:mb-14 reveal-hidden">
           <p className="font-label-caps text-xs text-primary mb-2 tracking-widest uppercase">Visual Proof</p>
@@ -239,7 +245,7 @@ export default function HomePage() {
 
         {/* Scroll carousel */}
         <div
-          className="relative group"
+          className="relative group overflow-visible"
           onMouseEnter={gallery.stop}
           onMouseLeave={gallery.start}
         >
@@ -248,13 +254,12 @@ export default function HomePage() {
           <div
             ref={galleryCarouselRef}
             onTouchStart={gallery.stop}
-            className="flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory scrollbar-hide"
+            className="flex gap-5 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory scrollbar-hide"
           >
             {SCROLL_CAROUSEL_ITEMS.map((item) => (
               <div
                 key={item.i}
-                // UPDATED: Forces full width on mobile minus gutters, keeps desktop size
-                className="flex-shrink-0 w-[calc(100vw-48px)] sm:w-64 md:w-72 lg:w-80 snap-start"
+                className="flex-shrink-0 w-[calc(100vw-48px)] sm:w-[calc(50%-10px)] md:w-[calc(33.333%-14px)] lg:w-[calc(25%-15px)] snap-start"
               >
                 <div className="relative h-64 sm:h-72 rounded-xl overflow-hidden glass-card border border-white/5 group/card">
                   <img
@@ -272,7 +277,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* NEW: Dot navigation for mobile to indicate more items */}
+          {/* Dot navigation for mobile to indicate more items */}
           <div className="flex items-center justify-center gap-1.5 md:hidden">
             {SCROLL_CAROUSEL_ITEMS.map((_, i) => (
               <button
@@ -288,7 +293,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Arrows (Unchanged) */}
+          {/* Arrows */}
           <button
             onClick={() => gallery.nudge('left')}
             className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity"
