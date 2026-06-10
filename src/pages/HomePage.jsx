@@ -253,7 +253,8 @@ export default function HomePage() {
             {SCROLL_CAROUSEL_ITEMS.map((item) => (
               <div
                 key={item.i}
-                className="flex-shrink-0 w-[75vw] sm:w-64 md:w-72 lg:w-80 snap-start"
+                // UPDATED: Forces full width on mobile minus gutters, keeps desktop size
+                className="flex-shrink-0 w-[calc(100vw-48px)] sm:w-64 md:w-72 lg:w-80 snap-start"
               >
                 <div className="relative h-64 sm:h-72 rounded-xl overflow-hidden glass-card border border-white/5 group/card">
                   <img
@@ -271,7 +272,23 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Arrows */}
+          {/* NEW: Dot navigation for mobile to indicate more items */}
+          <div className="flex items-center justify-center gap-1.5 md:hidden">
+            {SCROLL_CAROUSEL_ITEMS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => gallery.scrollToIndex(i)}
+                aria-label={`Go to service ${i + 1}`}
+                className={`rounded-full transition-all duration-300 ${
+                  gallery.activeIndex === i
+                    ? 'w-4 h-1.5 bg-primary'
+                    : 'w-1.5 h-1.5 bg-white/20'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Arrows (Unchanged) */}
           <button
             onClick={() => gallery.nudge('left')}
             className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity"

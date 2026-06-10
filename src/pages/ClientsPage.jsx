@@ -228,7 +228,11 @@ export default function ClientsPage() {
               className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth pb-6 snap-x snap-mandatory hide-scrollbar"
             >
               {carouselClients.map((client) => (
-                <div key={client.id} className="flex-shrink-0 w-[290px] sm:w-80 lg:w-92 snap-start reveal-on-scroll">
+                <div 
+                  key={client.id} 
+                  // UPDATED: w-[calc(100vw-48px)] forces near full-screen width on mobile
+                  className="flex-shrink-0 w-[calc(100vw-48px)] sm:w-80 lg:w-92 snap-start reveal-on-scroll"
+                >
                   <a href={client.website} target="_blank" rel="noopener noreferrer" className="group/card block">
                     <div className="relative h-[400px] sm:h-[440px] rounded-xl overflow-hidden glass-card border border-white/5 bg-neutral-900/40 cursor-pointer flex flex-col justify-between p-6">
                       <div className="h-20 sm:h-24 w-full flex items-center justify-center bg-white rounded-xl p-4 z-10 transition-all duration-300 group-hover/card:shadow-[0_0_24px_rgba(255,255,255,0.15)] group-hover/card:scale-[1.02] shadow-md">
@@ -252,6 +256,26 @@ export default function ClientsPage() {
               ))}
             </div>
 
+            {/* NEW: Dot navigation for mobile */}
+            <div className="flex items-center justify-center gap-1.5 md:hidden">
+              {carouselClients.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    const carousel = carouselRef.current;
+                    if (carousel) {
+                      const cardWidth = carousel.scrollWidth / carouselClients.length;
+                      carousel.scrollTo({ left: cardWidth * i, behavior: 'smooth' });
+                      setIsAutoScrolling(false);
+                    }
+                  }}
+                  aria-label={`Go to client ${i + 1}`}
+                  className="w-1.5 h-1.5 rounded-full bg-white/20"
+                />
+              ))}
+            </div>
+
+            {/* Navigation Arrows (Desktop only) */}
             <button onClick={() => scrollCarousel('left')} className="hidden md:flex absolute -left-6 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-label="Scroll left">
               <div className="w-10 h-10 rounded-full bg-neutral-900 border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-colors group/btn">
                 <span className="material-symbols-outlined text-white text-lg group-hover/btn:text-neutral-950">chevron_left</span>
