@@ -187,7 +187,7 @@ export default function CareersPage() {
                   <div className="reveal-field space-y-2">
                     <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="full-name">Full Name</label>
                     <input 
-                      className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3" 
+                      className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-base md:text-sm transition-all px-4 py-3" 
                       id="full-name" 
                       placeholder="Enter full legal name" 
                       required 
@@ -199,7 +199,7 @@ export default function CareersPage() {
                   <div className="reveal-field space-y-2">
                     <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="email">Email Address</label>
                     <input 
-                      className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3" 
+                      className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-base md:text-sm transition-all px-4 py-3" 
                       id="email" 
                       placeholder="email@example.com" 
                       required 
@@ -215,7 +215,7 @@ export default function CareersPage() {
                     <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="position">Position Applied For</label>
                     <div className="relative">
                       <select 
-                        className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3 appearance-none pr-10" 
+                        className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-base md:text-sm transition-all px-4 py-3 appearance-none pr-10" 
                         id="position"
                         value={position}
                         onChange={(e) => setPosition(e.target.value)}
@@ -234,7 +234,7 @@ export default function CareersPage() {
                   <div className="reveal-field space-y-2">
                     <label className="font-label-caps text-[11px] sm:text-label-caps text-on-surface-variant uppercase tracking-wider block" htmlFor="phone">Phone Number</label>
                     <input 
-                      className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-sm transition-all px-4 py-3" 
+                      className="w-full bg-black border border-white/10 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary text-white text-base md:text-sm transition-all px-4 py-3" 
                       id="phone" 
                       placeholder="+27 (0) 00 000 0000" 
                       required 

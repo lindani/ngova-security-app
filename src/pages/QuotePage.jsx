@@ -124,12 +124,13 @@ export default function QuotePage() {
           </div>
 
           {formMode === 'quote' && (
-            <div className="w-full border-y border-subtle/30 py-4 lg:py-0 lg:border-none">
-              <div className="flex flex-row lg:flex-col gap-4 lg:gap-6 overflow-x-auto lg:overflow-x-visible scrollbar-none snap-x relative items-center lg:items-start px-2 lg:px-0">
+            <div className="w-full border-y border-subtle/30 py-5 lg:py-0 lg:border-none">
+              {/* Removed mobile carousel track classes. Changed to safe mobile grid config */}
+              <div className="grid grid-cols-3 lg:flex lg:flex-col gap-4 lg:gap-6 relative items-start px-1 lg:px-0">
                 <div className="absolute left-[15px] top-6 bottom-6 w-px bg-border-subtle hidden lg:block"></div>
                 
                 {/* Step 1 Indicator */}
-                <div className={`flex flex-row lg:flex-row items-center gap-3 group relative transition-all snap-center shrink-0 min-w-[140px] sm:min-w-[180px] lg:min-w-0 ${currentStep < 1 ? 'opacity-40' : ''}`}>
+                <div className={`flex flex-col lg:flex-row items-center lg:items-center text-center lg:text-left gap-2 lg:gap-3 relative transition-all ${currentStep < 1 ? 'opacity-40' : ''}`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center z-10 ring-4 ring-background text-xs shrink-0 ${
                     currentStep > 1 
                       ? 'bg-security-emerald text-fortress-black' 
@@ -139,14 +140,14 @@ export default function QuotePage() {
                   }`}>
                     <span className="material-symbols-outlined text-sm">{currentStep > 1 ? 'check' : 'person'}</span>
                   </div>
-                  <div className="text-left">
-                    <span className={`font-label-caps text-[9px] tracking-widest block ${currentStep > 1 ? 'text-security-emerald' : currentStep === 1 ? 'text-primary' : 'text-on-surface-variant'}`}>STEP 01</span>
-                    <p className={`text-xs font-bold ${currentStep >= 1 ? 'text-on-surface' : 'text-on-surface-variant'}`}>Contact Info</p>
+                  <div>
+                    <span className={`font-label-caps text-[8px] sm:text-[9px] tracking-widest block ${currentStep > 1 ? 'text-security-emerald' : currentStep === 1 ? 'text-primary' : 'text-on-surface-variant'}`}>STEP 01</span>
+                    <p className={`text-[10px] sm:text-xs font-bold ${currentStep >= 1 ? 'text-on-surface' : 'text-on-surface-variant'}`}>Contact</p>
                   </div>
                 </div>
 
                 {/* Step 2 Indicator */}
-                <div className={`flex flex-row lg:flex-row items-center gap-3 group relative transition-all snap-center shrink-0 min-w-[140px] sm:min-w-[180px] lg:min-w-0 ${currentStep < 2 ? 'opacity-40' : ''}`}>
+                <div className={`flex flex-col lg:flex-row items-center lg:items-center text-center lg:text-left gap-2 lg:gap-3 relative transition-all ${currentStep < 2 ? 'opacity-40' : ''}`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center z-10 ring-4 ring-background text-xs shrink-0 ${
                     currentStep > 2 
                       ? 'bg-security-emerald text-fortress-black' 
@@ -156,14 +157,14 @@ export default function QuotePage() {
                   }`}>
                     <span className="material-symbols-outlined text-sm">{currentStep > 2 ? 'check' : 'visibility'}</span>
                   </div>
-                  <div className="text-left">
-                    <span className={`font-label-caps text-[9px] tracking-widest block ${currentStep > 2 ? 'text-security-emerald' : currentStep === 2 ? 'text-primary' : 'text-on-surface-variant'}`}>STEP 02</span>
-                    <p className={`text-xs font-bold ${currentStep >= 2 ? 'text-on-surface' : 'text-on-surface-variant'}`}>Requirements</p>
+                  <div>
+                    <span className={`font-label-caps text-[8px] sm:text-[9px] tracking-widest block ${currentStep > 2 ? 'text-security-emerald' : currentStep === 2 ? 'text-primary' : 'text-on-surface-variant'}`}>STEP 02</span>
+                    <p className={`text-[10px] sm:text-xs font-bold ${currentStep >= 2 ? 'text-on-surface' : 'text-on-surface-variant'}`}>Specs</p>
                   </div>
                 </div>
 
                 {/* Step 3 Indicator */}
-                <div className={`flex flex-row lg:flex-row items-center gap-3 group relative transition-all snap-center shrink-0 min-w-[140px] sm:min-w-[180px] lg:min-w-0 ${currentStep < 3 ? 'opacity-40' : ''}`}>
+                <div className={`flex flex-col lg:flex-row items-center lg:items-center text-center lg:text-left gap-2 lg:gap-3 relative transition-all ${currentStep < 3 ? 'opacity-40' : ''}`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center z-10 ring-4 ring-background text-xs shrink-0 ${
                     currentStep === 3 
                         ? 'bg-primary text-on-primary shadow-[0_0_15px_rgba(255,179,172,0.4)]'
@@ -171,9 +172,9 @@ export default function QuotePage() {
                   }`}>
                     <span className="material-symbols-outlined text-sm">verified_user</span>
                   </div>
-                  <div className="text-left">
-                    <span className={`font-label-caps text-[9px] tracking-widest block ${currentStep === 3 ? 'text-primary' : 'text-on-surface-variant'}`}>STEP 03</span>
-                    <p className={`text-xs font-bold ${currentStep === 3 ? 'text-on-surface' : 'text-on-surface-variant'}`}>Review</p>
+                  <div>
+                    <span className={`font-label-caps text-[8px] sm:text-[9px] tracking-widest block ${currentStep === 3 ? 'text-primary' : 'text-on-surface-variant'}`}>STEP 03</span>
+                    <p className={`text-[10px] sm:text-xs font-bold ${currentStep === 3 ? 'text-on-surface' : 'text-on-surface-variant'}`}>Review</p>
                   </div>
                 </div>
               </div>
@@ -240,7 +241,7 @@ export default function QuotePage() {
                         <div className="space-y-2">
                           <label className="font-label-caps text-[10px] tracking-widest text-on-surface-variant block">FULL NAME</label>
                           <input 
-                            className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-sm" 
+                            className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-base md:text-sm" 
                             placeholder="Johnathan Vane" 
                             required={formMode === 'quote'} 
                             type="text"
@@ -251,7 +252,7 @@ export default function QuotePage() {
                         <div className="space-y-2">
                           <label className="font-label-caps text-[10px] tracking-widest text-on-surface-variant block">COMPANY / ORGANIZATION</label>
                           <input 
-                            className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-sm" 
+                            className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-base md:text-sm" 
                             placeholder="Nexus Dynamics Corp." 
                             required={formMode === 'quote'} 
                             type="text"
@@ -262,7 +263,7 @@ export default function QuotePage() {
                         <div className="space-y-2">
                           <label className="font-label-caps text-[10px] tracking-widest text-on-surface-variant block">EMAIL ADDRESS</label>
                           <input 
-                            className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-sm" 
+                            className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-base md:text-sm" 
                             placeholder="vane@nexus-dynamics.com" 
                             required={formMode === 'quote'} 
                             type="email"
@@ -273,7 +274,7 @@ export default function QuotePage() {
                         <div className="space-y-2">
                           <label className="font-label-caps text-[10px] tracking-widest text-on-surface-variant block">PHONE NUMBER</label>
                           <input 
-                            className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-sm" 
+                            className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-base md:text-sm" 
                             placeholder="+27 (0) 21 000 8888" 
                             required={formMode === 'quote'} 
                             type="tel"
@@ -318,7 +319,7 @@ export default function QuotePage() {
                             <select 
                               value={serviceCategory}
                               onChange={(e) => setServiceCategory(e.target.value)}
-                              className="w-full border border-subtle px-4 py-3 text-on-surface rounded-lg focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-all cursor-pointer bg-black text-sm"
+                              className="w-full border border-subtle px-4 py-3 text-on-surface rounded-lg focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-all cursor-pointer bg-black text-base md:text-sm"
                             >
                               <option value="Physical Static Guarding">Physical Static Guarding</option>
                               <option value="Executive Protection (Close Guarding)">Executive Protection (Close Guarding)</option>
@@ -335,7 +336,7 @@ export default function QuotePage() {
                           <input 
                             value={primaryLocation}
                             onChange={(e) => setPrimaryLocation(e.target.value)}
-                            className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-sm" 
+                            className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-base md:text-sm" 
                             placeholder="Facility or physical site address" 
                             required={formMode === 'quote'} 
                             type="text"
@@ -348,7 +349,7 @@ export default function QuotePage() {
                               <input 
                                 value={duration}
                                 onChange={(e) => setDuration(e.target.value)}
-                                className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary text-sm" 
+                                className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary text-base md:text-sm" 
                                 type="number"
                               />
                               <span className="text-on-surface-variant font-medium text-sm">Months</span>
@@ -359,7 +360,7 @@ export default function QuotePage() {
                             <input 
                               value={assetValue}
                               onChange={(e) => setAssetValue(e.target.value)}
-                              className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-sm" 
+                              className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-base md:text-sm" 
                               placeholder="e.g., Commercial Office Park" 
                               type="text"
                             />
@@ -462,7 +463,7 @@ export default function QuotePage() {
                       <div className="space-y-2">
                         <label className="font-label-caps text-[10px] tracking-widest text-on-surface-variant block">YOUR NAME</label>
                         <input 
-                          className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-sm" 
+                          className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-base md:text-sm" 
                           placeholder="Alex Smith" 
                           required={formMode === 'contact'} 
                           type="text"
@@ -473,7 +474,7 @@ export default function QuotePage() {
                       <div className="space-y-2">
                         <label className="font-label-caps text-[10px] tracking-widest text-on-surface-variant block">EMAIL ADDRESS</label>
                         <input 
-                          className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-sm" 
+                          className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-base md:text-sm" 
                           placeholder="smith@organization.com" 
                           required={formMode === 'contact'} 
                           type="email"
@@ -486,7 +487,7 @@ export default function QuotePage() {
                     <div className="space-y-2">
                       <label className="font-label-caps text-[10px] tracking-widest text-on-surface-variant block">SUBJECT</label>
                       <input 
-                        className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-sm" 
+                        className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-base md:text-sm" 
                         placeholder="General Question or Inquiry" 
                         required={formMode === 'contact'} 
                         type="text"
@@ -498,7 +499,7 @@ export default function QuotePage() {
                     <div className="space-y-2">
                       <label className="font-label-caps text-[10px] tracking-widest text-on-surface-variant block">YOUR MESSAGE</label>
                       <textarea 
-                        className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-sm min-h-[120px] resize-y" 
+                        className="w-full bg-black border border-subtle px-4 py-3 text-on-surface rounded-lg transition-all focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant/40 text-base md:text-sm min-h-[120px] resize-y" 
                         placeholder="Write your questions or notes here..."
                         required={formMode === 'contact'}
                         value={contactMessage}
