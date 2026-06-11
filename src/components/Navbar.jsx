@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const LOGO_URL = 'https://ngovasecurity.co.za/wp/wp-content/uploads/2025/06/Site-Header-Logo.png'
@@ -60,99 +60,140 @@ const searchableContent = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState(null)
+  const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState(false)
+
+  // Search state lives directly in the component — no custom hook
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
-  const [openDropdown, setOpenDropdown] = useState(null)
-  const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState(false)
-  
+
   const location = useLocation()
   const navigate = useNavigate()
   const desktopSearchRef = useRef(null)
+  const mobileSearchInputRef = useRef(null)
+  const desktopSearchInputRef = useRef(null)
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 30)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  // Close menus and clear searches on page route change
-  useEffect(() => {
-    setMobileOpen(false)
-    setOpenDropdown(null)
-    setSearchOpen(false)
-    setMobileSubmenuOpen(false)
+  // Stable handlers via useCallback so effects don't re-run unnecessarily
+  const clearSearch = useCallback(() => {
     setSearchQuery('')
     setSearchResults([])
-  }, [location])
+  }, [])
 
-  // Handle clicking outside the desktop search dropdown to close it
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (desktopSearchRef.current && !desktopSearchRef.current.contains(event.target)) {
+  const closeSearch = useCallback(() => {
+    setSearchOpen(false)
+    setSearchQuery('')
+    setSearchResults([])
+  }, [])
+
+  const handleSearch = useCallback((query) => {
+    setSearchQuery(query)
+    if (!query.trim()) {
+      setSearchResults([])
+      return
+    }
+    const q = query.toLowerCase()
+    setSearchResults(
+      searchableContent.filter(
+        (item) =>
+          item.title.toLowerCase().includes(q) ||
+          item.keywords.some((kw) => kw.toLowerCase().includes(q))
+      )
+    )
+  }, [])
+
+  const handleSearchSelect = useCallback((item) => {
+    setSearchOpen(false)
+    setSearchQuery('')
+    setSearchResults([])
+    setMobileOpen(false)
+    navigate(item.path, { state: { mode: item.mode || 'quote' } })
+  }, [navigate])
+
+  const toggleSearch = useCallback(() => {
+    setSearchOpen((prev) => {
+      if (prev) {
+        setSearchQuery('')
+        setSearchResults([])
+        return false
+      }
+      setMobileOpen(false)
+      return true
+    })
+  }, [])
+
+  const toggleMobileMenu = useCallback(() => {
+    setMobileOpen((prev) => {
+      if (!prev) {
+        // Opening menu — close search
         setSearchOpen(false)
         setSearchQuery('')
         setSearchResults([])
       }
+      return !prev
+    })
+  }, [])
+
+  // Scroll detection
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 30)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Close everything on route change
+  useEffect(() => {
+    setMobileOpen(false)
+    setOpenDropdown(null)
+    setMobileSubmenuOpen(false)
+    setSearchOpen(false)
+    setSearchQuery('')
+    setSearchResults([])
+  }, [location.pathname])
+
+  // Click-outside to close desktop search popover
+  useEffect(() => {
+    if (!searchOpen) return
+    const handler = (e) => {
+      if (desktopSearchRef.current && !desktopSearchRef.current.contains(e.target)) {
+        closeSearch()
+      }
     }
-    if (searchOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [searchOpen, closeSearch])
+
+  // Auto-focus the correct input when search opens
+  useEffect(() => {
+    if (!searchOpen) return
+    const id = setTimeout(() => {
+      if (window.innerWidth < 768) {
+        mobileSearchInputRef.current?.focus()
+      } else {
+        desktopSearchInputRef.current?.focus()
+      }
+    }, 50)
+    return () => clearTimeout(id)
   }, [searchOpen])
 
-  const handleSearch = (query) => {
-    setSearchQuery(query)
-    if (query.trim() === '') {
-      setSearchResults([])
-      return
-    }
-
-    const results = searchableContent.filter((item) =>
-      item.keywords.some((keyword) =>
-        keyword.toLowerCase().includes(query.toLowerCase())
-      ) || item.title.toLowerCase().includes(query.toLowerCase())
-    )
-    setSearchResults(results)
-  }
-
-  const handleSearchSelect = (item) => {
-    navigate(item.path, { state: { mode: item.mode || 'quote' } })
-    setSearchQuery('')
-    setSearchResults([])
-    setSearchOpen(false)
-  }
-
-  const toggleMobileMenu = () => {
-    setMobileOpen(!mobileOpen)
-    if (searchOpen) setSearchOpen(false)
-  }
-
-  const toggleSearchLayer = () => {
-    setSearchOpen(!searchOpen)
-    if (mobileOpen) setMobileOpen(false)
-    setSearchQuery('')
-    setSearchResults([])
-  }
+  const headerElevated = scrolled || mobileOpen || searchOpen
 
   return (
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-300 ease-in-out py-2 ${
-        scrolled || mobileOpen || searchOpen
+        headerElevated
           ? 'bg-fortress-black/98 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.8)]'
           : 'bg-fortress-black/5 backdrop-blur-sm'
       }`}
     >
-      {/* Desktop Navbar */}
+      {/* ── Desktop Navbar ── */}
       <nav className="hidden md:flex justify-between items-center px-gutter max-w-container-max mx-auto w-full gap-4">
         <Link to="/" className="flex-shrink-0 transition-all duration-300 hover:scale-[1.02] relative group py-0.5 block">
           <div className="absolute inset-0 bg-fortress-black/40 blur-md rounded-lg opacity-100 group-hover:bg-fortress-black/60 transition-colors pointer-events-none -inset-x-2"></div>
           <img alt="Ngova Security Logo" className="h-12 lg:h-14 w-auto object-contain relative z-10 filter brightness-110" src={LOGO_URL} />
         </Link>
 
-        {/* Center Links */}
+        {/* Center links */}
         <div className="flex items-center justify-center gap-0.5 lg:gap-1 flex-1">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.to
@@ -171,18 +212,26 @@ export default function Navbar() {
                 >
                   <span className="material-symbols-outlined text-lg opacity-85">{link.icon}</span>
                   {link.label}
-                  {hasSubmenu && <span className={`material-symbols-outlined text-sm transition-transform ${isOpen ? 'rotate-180' : ''}`}>expand_more</span>}
+                  {hasSubmenu && (
+                    <span className={`material-symbols-outlined text-sm transition-transform ${isOpen ? 'rotate-180' : ''}`}>
+                      expand_more
+                    </span>
+                  )}
                 </Link>
 
                 {hasSubmenu && (
-                  <div onMouseEnter={() => setOpenDropdown(link.to)} onMouseLeave={() => setOpenDropdown(null)}
+                  <div
+                    onMouseEnter={() => setOpenDropdown(link.to)}
+                    onMouseLeave={() => setOpenDropdown(null)}
                     className={`absolute left-0 top-full mt-1.5 w-80 bg-fortress-black/95 backdrop-blur-3xl border border-primary/20 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.7)] transition-all duration-300 ${
                       isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
                     }`}
                   >
                     <div className="p-1">
                       {link.submenu.map((item, idx) => (
-                        <button key={idx} onClick={() => navigate(item.to)}
+                        <button
+                          key={idx}
+                          onClick={() => navigate(item.to)}
                           className="w-full text-left px-4 py-3 rounded-md hover:bg-primary/15 transition-colors group/item border border-transparent hover:border-primary/20"
                         >
                           <p className="text-white font-semibold group-hover/item:text-primary">{item.title}</p>
@@ -197,40 +246,47 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Desktop Action Area: Search + CTA */}
+        {/* Desktop action area */}
         <div className="flex items-center gap-4 flex-shrink-0">
-          {/* Desktop Inline Search Controller */}
-          <div className="relative hidden md:block" ref={desktopSearchRef}>
-            <button 
-              onClick={toggleSearchLayer} 
+          {/* Desktop search */}
+          <div className="relative" ref={desktopSearchRef}>
+            <button
+              onClick={toggleSearch}
+              aria-label={searchOpen ? 'Close search' : 'Open search'}
               className="text-white/80 hover:text-white h-10 w-10 hover:bg-white/10 rounded-md flex items-center justify-center transition-colors"
-              title="Search Site"
             >
-              <span className="material-symbols-outlined text-[24px]">{searchOpen ? 'close' : 'search'}</span>
+              <span className="material-symbols-outlined text-[24px]">
+                {searchOpen ? 'close' : 'search'}
+              </span>
             </button>
 
-            {/* Desktop Popover Input Floating Bar */}
             {searchOpen && (
-              <div className="absolute right-0 top-full mt-3 w-80 bg-fortress-black/98 border border-primary/20 rounded-xl p-3 shadow-[0_10px_40px_rgba(0,0,0,0.8)] animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute right-0 top-full mt-3 w-80 bg-fortress-black/98 border border-primary/20 rounded-xl p-3 shadow-[0_10px_40px_rgba(0,0,0,0.8)]">
                 <div className="relative">
                   <input
+                    ref={desktopSearchInputRef}
                     type="text"
                     placeholder="Search site assets..."
-                    className="w-full bg-white/5 border border-white/10 rounded-lg py-2 pl-3 pr-10 text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary/40"
+                    className="w-full bg-white/15 border border-white/30 rounded-lg py-2 pl-3 pr-10 text-sm text-white placeholder-white/50 focus:outline-none focus:bg-white/20 focus:border-primary/70 transition-colors"
                     value={searchQuery}
                     onChange={(e) => handleSearch(e.target.value)}
-                    autoFocus
                   />
-                  <span className="material-symbols-outlined absolute right-3 top-2.5 text-white/30 text-base">search</span>
+                  <span className="material-symbols-outlined absolute right-3 top-2.5 text-white/30 text-base pointer-events-none">
+                    search
+                  </span>
                 </div>
 
-                {/* Desktop Realtime Dropdown Results */}
                 {searchResults.length > 0 && (
                   <div className="mt-2 bg-black/40 rounded-lg border border-white/5 max-h-48 overflow-y-auto">
                     {searchResults.map((result, idx) => (
                       <button
                         key={idx}
-                        onClick={() => handleSearchSelect(result)}
+                        // onMouseDown + preventDefault prevents the click-outside handler
+                        // from firing before this handler runs and closing the popover
+                        onMouseDown={(e) => {
+                          e.preventDefault()
+                          handleSearchSelect(result)
+                        }}
                         className="w-full text-left px-3 py-2.5 hover:bg-primary/15 transition-colors border-b border-white/5 last:border-none flex items-center gap-2"
                       >
                         <span className="material-symbols-outlined text-white/40 text-xs">subdirectory_arrow_right</span>
@@ -249,64 +305,88 @@ export default function Navbar() {
             )}
           </div>
 
-          <Link to="/quote" state={{ mode: 'quote' }} className="bg-primary text-on-primary px-5 lg:px-6 py-2 font-bold hover:bg-primary/90 transition-all rounded-md text-sm shadow-lg flex items-center gap-2">
+          <Link
+            to="/quote"
+            state={{ mode: 'quote' }}
+            className="bg-primary text-on-primary px-5 lg:px-6 py-2 font-bold hover:bg-primary/90 transition-all rounded-md text-sm shadow-lg flex items-center gap-2"
+          >
             <span className="material-symbols-outlined text-lg">request_quote</span> Get Quote
           </Link>
         </div>
       </nav>
 
-      {/* Mobile Navbar Header */}
+      {/* ── Mobile Navbar header ── */}
       <nav className="md:hidden flex justify-between items-center px-gutter w-full max-w-container-max mx-auto">
-        <button className="text-white h-9 w-9 -ml-2 rounded-lg flex items-center justify-center" onClick={toggleMobileMenu}>
+        <button
+          className="text-white h-9 w-9 -ml-2 rounded-lg flex items-center justify-center"
+          onClick={toggleMobileMenu}
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+        >
           <span className="material-symbols-outlined text-[28px]">{mobileOpen ? 'close' : 'menu'}</span>
         </button>
         <Link to="/" className="flex-shrink-0 py-1 h-11 flex items-center">
           <img alt="Ngova Security Logo" className="h-8 w-auto object-contain" src={LOGO_URL} />
         </Link>
-        <button onClick={toggleSearchLayer} className="text-white h-9 w-9 -mr-2 rounded-lg flex items-center justify-center">
+        <button
+          onClick={toggleSearch}
+          aria-label={searchOpen ? 'Close search' : 'Open search'}
+          className="text-white h-9 w-9 -mr-2 rounded-lg flex items-center justify-center"
+        >
           <span className="material-symbols-outlined text-[28px]">{searchOpen ? 'close' : 'search'}</span>
         </button>
       </nav>
 
-      {/* Mobile Search Overlay Input Drawer */}
+      {/* ── Mobile search overlay ── */}
       {searchOpen && (
-        <div className="md:hidden absolute top-[60px] left-0 w-full bg-fortress-black/98 px-gutter py-4 z-50">
+        <div className="md:hidden absolute top-full left-0 w-full bg-fortress-black/98 px-gutter py-4 z-50 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
           <div className="relative">
             <input
+              ref={mobileSearchInputRef}
               type="text"
               placeholder="Search security services..."
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-white placeholder-white/30 focus:outline-none focus:border-primary/50"
+              className="w-full bg-white/15 border border-white/30 rounded-xl py-3 pl-4 pr-12 text-white placeholder-white/50 focus:outline-none focus:bg-white/20 focus:border-primary/70 transition-colors"
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
-              autoFocus
             />
-            <span className="material-symbols-outlined absolute right-4 top-3.5 text-white/30">search</span>
+            {searchQuery.trim() !== '' ? (
+              <button
+                onMouseDown={(e) => { e.preventDefault(); clearSearch() }}
+                onTouchEnd={(e) => { e.preventDefault(); clearSearch() }}
+                className="absolute right-4 top-3.5 text-white/60 hover:text-white transition-colors"
+                aria-label="Clear search"
+              >
+                <span className="material-symbols-outlined text-[20px]">close</span>
+              </button>
+            ) : (
+              <span className="material-symbols-outlined absolute right-4 top-3.5 text-white/50 pointer-events-none">search</span>
+            )}
           </div>
 
           {searchResults.length > 0 && (
-            <div className="mt-4 bg-black/40 rounded-xl border border-white/5 overflow-hidden max-h-60 overflow-y-auto">
+            <div className="mt-4 bg-white/5 rounded-xl border border-white/10 overflow-hidden max-h-60 overflow-y-auto">
               {searchResults.map((result, idx) => (
                 <button
                   key={idx}
-                  onClick={() => handleSearchSelect(result)}
-                  className="w-full text-left px-4 py-3.5 hover:bg-primary/10 transition-colors border-b border-white/5 last:border-none flex items-center gap-3"
+                  onMouseDown={(e) => { e.preventDefault(); handleSearchSelect(result) }}
+                  onTouchEnd={(e) => { e.preventDefault(); handleSearchSelect(result) }}
+                  className="w-full text-left px-4 py-3.5 hover:bg-primary/15 active:bg-primary/20 transition-colors border-b border-white/8 last:border-none flex items-center gap-3"
                 >
-                  <span className="material-symbols-outlined text-white/45 text-sm">subdirectory_arrow_right</span>
+                  <span className="material-symbols-outlined text-white/50 text-sm">subdirectory_arrow_right</span>
                   <p className="text-white font-medium text-sm">{result.title}</p>
                 </button>
               ))}
             </div>
           )}
-          
+
           {searchQuery.trim() !== '' && searchResults.length === 0 && (
-            <div className="mt-4 px-4 py-4 text-white/30 text-sm text-center bg-black/20 rounded-xl border border-white/5">
+            <div className="mt-4 px-4 py-4 text-white/50 text-sm text-center bg-white/5 rounded-xl border border-white/10">
               No matching assets or services found.
             </div>
           )}
         </div>
       )}
 
-      {/* Mobile Dropdown Menu Drawer */}
+      {/* ── Mobile menu drawer ── */}
       {mobileOpen && (
         <div className="md:hidden px-gutter pb-8 h-[calc(100vh-60px)] overflow-y-auto animate-in fade-in slide-in-from-top-4 duration-300">
           <div className="mt-4 space-y-1">
@@ -336,11 +416,13 @@ export default function Navbar() {
                         </span>
                       </div>
                     </button>
-                    
+
                     {mobileSubmenuOpen && (
                       <div className="my-1 pl-10 space-y-1 border-l border-white/10">
                         {link.submenu.map((item, idx) => (
-                          <button key={idx} onClick={() => navigate(item.to)}
+                          <button
+                            key={idx}
+                            onClick={() => navigate(item.to)}
                             className="w-full text-left py-3 transition-colors block border-b border-white/5 last:border-none"
                           >
                             <p className="font-semibold text-white text-sm">{item.title}</p>
@@ -354,7 +436,10 @@ export default function Navbar() {
               }
 
               return (
-                <Link key={link.to} to={link.to} state={{ mode: link.mode || 'quote' }}
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  state={{ mode: link.mode || 'quote' }}
                   className={`w-full flex items-center gap-4 py-3.5 transition-all border-b border-white/5 ${
                     isActive ? 'text-primary' : 'text-white'
                   }`}
@@ -368,9 +453,13 @@ export default function Navbar() {
               )
             })}
           </div>
-          
+
           <div className="mt-6">
-            <Link to="/quote" state={{ mode: 'quote' }} className="w-full flex items-center justify-center gap-2 bg-primary text-black py-4 font-bold rounded-xl shadow-lg shadow-primary/20">
+            <Link
+              to="/quote"
+              state={{ mode: 'quote' }}
+              className="w-full flex items-center justify-center gap-2 bg-primary text-black py-4 font-bold rounded-xl shadow-lg shadow-primary/20"
+            >
               <span className="material-symbols-outlined">request_quote</span>
               Get a Quote
             </Link>
