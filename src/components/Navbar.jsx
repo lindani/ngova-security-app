@@ -151,9 +151,12 @@ export default function Navbar() {
     setSearchResults([])
   }, [location.pathname])
 
-  // Click-outside to close desktop search popover
+  // Click-outside to close desktop search popover — desktop only.
+  // On mobile the overlay is a separate DOM subtree outside desktopSearchRef,
+  // so this listener would incorrectly close search when the user taps the input.
   useEffect(() => {
     if (!searchOpen) return
+    if (window.innerWidth < 768) return  // never run on mobile/touch
     const handler = (e) => {
       if (desktopSearchRef.current && !desktopSearchRef.current.contains(e.target)) {
         closeSearch()
@@ -338,51 +341,61 @@ export default function Navbar() {
 
       {/* ── Mobile search overlay ── */}
       {searchOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-fortress-black/98 px-gutter py-4 z-50 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
-          <div className="relative">
-            <input
-              ref={mobileSearchInputRef}
-              type="text"
-              placeholder="Search security services..."
-              className="w-full bg-white/15 border border-white/30 rounded-xl py-3 pl-4 pr-12 text-white placeholder-white/50 focus:outline-none focus:bg-white/20 focus:border-primary/70 transition-colors"
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-            />
-            {searchQuery.trim() !== '' ? (
-              <button
-                onMouseDown={(e) => { e.preventDefault(); clearSearch() }}
-                onTouchEnd={(e) => { e.preventDefault(); clearSearch() }}
-                className="absolute right-4 top-3.5 text-white/60 hover:text-white transition-colors"
-                aria-label="Clear search"
-              >
-                <span className="material-symbols-outlined text-[20px]">close</span>
-              </button>
-            ) : (
-              <span className="material-symbols-outlined absolute right-4 top-3.5 text-white/50 pointer-events-none">search</span>
+        <div className="md:hidden fixed inset-0 z-40 flex flex-col">
+          {/* Dim backdrop — tapping it closes search */}
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={closeSearch}
+          />
+
+          {/* Panel — sits below the navbar */}
+          <div className="relative z-10 mt-[60px] bg-[#0a0a0a] border-b border-white/10 px-gutter pt-4 pb-6 shadow-[0_8px_40px_rgba(0,0,0,0.9)]">
+            {/* Input */}
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none text-[22px]">search</span>
+              <input
+                ref={mobileSearchInputRef}
+                type="text"
+                placeholder="Search security services..."
+                className="w-full bg-white/10 border-2 border-white/25 rounded-xl py-3.5 pl-12 pr-12 text-white text-base placeholder-white/40 focus:outline-none focus:bg-white/15 focus:border-primary transition-colors"
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+              {searchQuery.trim() !== '' && (
+                <button
+                  onMouseDown={(e) => { e.preventDefault(); clearSearch() }}
+                  onTouchEnd={(e) => { e.preventDefault(); clearSearch() }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
+                  aria-label="Clear search"
+                >
+                  <span className="material-symbols-outlined text-[22px]">close</span>
+                </button>
+              )}
+            </div>
+
+            {/* Results */}
+            {searchResults.length > 0 && (
+              <div className="mt-3 rounded-xl border border-white/15 overflow-hidden bg-[#111111]">
+                {searchResults.map((result, idx) => (
+                  <button
+                    key={idx}
+                    onMouseDown={(e) => { e.preventDefault(); handleSearchSelect(result) }}
+                    onTouchEnd={(e) => { e.preventDefault(); handleSearchSelect(result) }}
+                    className="w-full text-left px-4 py-3.5 hover:bg-primary/15 active:bg-primary/20 transition-colors border-b border-white/8 last:border-none flex items-center gap-3"
+                  >
+                    <span className="material-symbols-outlined text-primary/70 text-sm">subdirectory_arrow_right</span>
+                    <p className="text-white font-medium text-sm">{result.title}</p>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {searchQuery.trim() !== '' && searchResults.length === 0 && (
+              <div className="mt-3 px-4 py-4 text-white/40 text-sm text-center bg-white/5 rounded-xl border border-white/10">
+                No matching results found.
+              </div>
             )}
           </div>
-
-          {searchResults.length > 0 && (
-            <div className="mt-4 bg-white/5 rounded-xl border border-white/10 overflow-hidden max-h-60 overflow-y-auto">
-              {searchResults.map((result, idx) => (
-                <button
-                  key={idx}
-                  onMouseDown={(e) => { e.preventDefault(); handleSearchSelect(result) }}
-                  onTouchEnd={(e) => { e.preventDefault(); handleSearchSelect(result) }}
-                  className="w-full text-left px-4 py-3.5 hover:bg-primary/15 active:bg-primary/20 transition-colors border-b border-white/8 last:border-none flex items-center gap-3"
-                >
-                  <span className="material-symbols-outlined text-white/50 text-sm">subdirectory_arrow_right</span>
-                  <p className="text-white font-medium text-sm">{result.title}</p>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {searchQuery.trim() !== '' && searchResults.length === 0 && (
-            <div className="mt-4 px-4 py-4 text-white/50 text-sm text-center bg-white/5 rounded-xl border border-white/10">
-              No matching assets or services found.
-            </div>
-          )}
         </div>
       )}
 
